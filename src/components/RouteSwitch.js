@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import App from "./App";
-import LogInPage from "./components/LogInPage";
+import LogInPage from "./LogInPage";
 
 const RouteSwitch = () => {
     return (
