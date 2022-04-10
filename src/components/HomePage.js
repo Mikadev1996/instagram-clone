@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 import NavBar from "./NavBar";
 import HomePageStyle from './styles/HomePage.sass';
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
 import NewPost from "./CreateNewPost";
 import MainPostsDisplay from "./MainPostsDisplay";
 
