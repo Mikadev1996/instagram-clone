@@ -1,12 +1,14 @@
 import React from "react";
-import NewPost from "./CreateNewPost";
+import NewPost from "./NewPost";
 
 //TODO: MAP POSTS FROM DATABASE TO NEWPOST COMPONENT
 
 const MainPostsDisplay = () => {
     return (
-        <div>
-            <NewPost />
+        <div className="content">
+            <div id="container">
+                <NewPost />
+            </div>
         </div>
     )
 }

@@ -12,7 +12,7 @@ const HomePage = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
 
     return (
-        <div className="container">
+        <div className="app">
             <NavBar
                 isSignedIn={isSignedIn}
                 openSignUp={openSignUp}

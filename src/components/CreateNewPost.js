@@ -1,6 +1,6 @@
 import React from "react";
 
-const NewPost = () => {
+const CreateNewPost = () => {
     return (
         <div>
 
@@ -8,4 +8,4 @@ const NewPost = () => {
     )
 }
 
-export default NewPost;
+export default CreateNewPost;
