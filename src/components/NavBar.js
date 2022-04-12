@@ -2,6 +2,7 @@ import React from "react";
 import logo from './styles/logo.png';
 import navbarStyles from './styles/NavBar.sass';
 import SignUp from "./SignUp";
+import {Link} from "react-router-dom";
 
 const NavBar = ({isSignedIn, openSignUp}) => {
     return (
@@ -14,10 +15,10 @@ const NavBar = ({isSignedIn, openSignUp}) => {
                 </div>
                 <div>
                     <ul>
-                        <li>Home</li>
+                        <Link to="/"><li>Home</li></Link>
                         <li>New Post</li>
                         <li>Notifications</li>
-                        <li>Profile</li>
+                        <Link to="user-page"><li>Profile</li></Link>
 
                     </ul>
                 </div>

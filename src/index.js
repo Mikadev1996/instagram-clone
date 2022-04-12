@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import RouteSwitch from "./components/RouteSwitch";
+import RouteSwitch from "./RouteSwitch";
 import {getFirebaseConfig} from "./firebase-config";
 import {initializeApp} from "firebase/app";
 import {collection, getDocs, getFirestore} from "firebase/firestore";

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import NavBar from "./NavBar";
 import HomePageStyle from './styles/HomePage.sass';
 import NewPost from "./CreateNewPost";
