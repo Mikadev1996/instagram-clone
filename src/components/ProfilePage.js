@@ -3,7 +3,7 @@ import NavBar from "./NavBar";
 
 const ProfilePage = () => {
     return (
-        <div>
+        <div className="app">
             <NavBar/>
             <div className="content">
                 <div>

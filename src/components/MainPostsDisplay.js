@@ -9,6 +9,8 @@ const MainPostsDisplay = () => {
         <div className="content">
             <div id="container">
                 <NewPost />
+                <NewPost />
+                <NewPost />
             </div>
             <div id="main-profile-display">
                 <p>Profile Pic</p>
