@@ -4,7 +4,7 @@ import navbarStyles from './styles/NavBar.sass';
 import SignUp from "./SignUp";
 import {Link} from "react-router-dom";
 
-const NavBar = ({isSignedIn, openSignUp}) => {
+const NavBar = ({isSignedIn, openSignUp, handleCreateNewPostMenu}) => {
     return (
         <nav>
             <div id="nav-content">
@@ -16,7 +16,7 @@ const NavBar = ({isSignedIn, openSignUp}) => {
                 <div>
                     <ul>
                         <Link to="/"><li>Home</li></Link>
-                        <li>New Post</li>
+                        <li onClick={() => handleCreateNewPostMenu()}>New Post</li>
                         <li>Notifications</li>
                         <Link to="user-page"><li>Profile</li></Link>
 

@@ -24,5 +24,3 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-// TODO: FIREBASE SETUP
-
