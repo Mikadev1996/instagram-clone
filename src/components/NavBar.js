@@ -1,10 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import logo from './styles/logo.png';
 import navbarStyles from './styles/NavBar.sass';
-import SignUp from "./SignUp";
 import {Link} from "react-router-dom";
 
-const NavBar = ({isSignedIn, openSignUp, handleCreateNewPostMenu, signIn, signUp}) => {
+const NavBar = ({handleCreateNewPostMenu}) => {
+    const [openSignUp, setOpenSignUp] = useState(false);
+    const [isSignedIn, setIsSignedIn] = useState(false);
+
+    function signIn() {
+        setIsSignedIn(isSignedIn => !isSignedIn);
+    }
+
+    function signUp() {
+        setOpenSignUp(signUp => !signUp);
+    }
+
     return (
         <nav>
             <div id="nav-content">
@@ -18,8 +28,7 @@ const NavBar = ({isSignedIn, openSignUp, handleCreateNewPostMenu, signIn, signUp
                         <Link to="/"><li>Home</li></Link>
                         <li onClick={() => handleCreateNewPostMenu()}>New Post</li>
                         <li>Notifications</li>
-                        <Link to="user-page"><li>Profile</li></Link>
-
+                        <Link to="/user-page"><li>Profile</li></Link>
                     </ul>
                 </div>
             </div>

@@ -4,12 +4,11 @@ import ProfileStyle from './styles/ProfilePage.sass';
 import PreviewPost from "./PreviewPost";
 
 const ProfilePage = () => {
-    const [isSignedIn, setIsSignedIn] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
 
     return (
         <div className="app">
-            <NavBar/>
+            <NavBar />
             <div className="content">
                 {editProfile && <div className="edit-profile">
                     <input type="text" placeholder="Enter a biography" maxLength="50"/>
