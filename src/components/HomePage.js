@@ -14,9 +14,19 @@ const HomePage = () => {
         setOpenNewPost(openNewPost => !openNewPost);
     }
 
+    function signIn() {
+        setIsSignedIn(isSignedIn => !isSignedIn);
+    }
+
+    function signUp() {
+        setOpenSignUp(signUp => !signUp);
+    }
+
     return (
         <div className="app">
             <NavBar
+                signUp={signUp}
+                signIn={signIn}
                 isSignedIn={isSignedIn}
                 openSignUp={openSignUp}
                 handleCreateNewPostMenu={handleCreateNewPostMenu}

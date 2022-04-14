@@ -4,14 +4,14 @@ import navbarStyles from './styles/NavBar.sass';
 import SignUp from "./SignUp";
 import {Link} from "react-router-dom";
 
-const NavBar = ({isSignedIn, openSignUp, handleCreateNewPostMenu}) => {
+const NavBar = ({isSignedIn, openSignUp, handleCreateNewPostMenu, signIn, signUp}) => {
     return (
         <nav>
             <div id="nav-content">
                 <div id="nav-left">
                     <img src={logo} alt="logo"/>
-                    {!isSignedIn && <button>Sign In</button>}
-                    {!openSignUp && <button>Sign Up</button>}
+                    {!isSignedIn && <button onClick={() => signIn()}>Sign In</button>}
+                    {!openSignUp && <button onClick={() => signUp()}>Sign Up</button>}
                 </div>
                 <div>
                     <ul>
