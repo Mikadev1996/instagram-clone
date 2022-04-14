@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import NavBar from "./NavBar";
+import ProfileStyle from './styles/ProfilePage.sass';
+import PreviewPost from "./PreviewPost";
 
 const ProfilePage = () => {
     const [isSignedIn, setIsSignedIn] = useState(false);
@@ -16,13 +18,33 @@ const ProfilePage = () => {
                 </div>}
                 <div className="profile-container">
                     <div className="profile-info">
-                        Profile Preview
-                        <p>Profile Picture</p>
-                        <p>Bio</p>
-                        {isSignedIn && <button className="edit-profile-btn">Edit</button>}
+                        <div><p>Profile Picture</p></div>
+                        <div>
+                            <div>
+                                <p>Username</p>
+                                <button>Edit Profile</button>
+                            </div>
+                            <ul>
+                                <li>No. Posts</li>
+                                <li>No. Followers</li>
+                                <li>No. Following</li>
+                            </ul>
+                            <div>
+                                User Biography
+                            </div>
+                        </div>
                     </div>
+                    <hr className="profile-separator"/>
                     <div className="profile-user-posts">
-                        All current signed in user posts
+                        <h1 className="posts-title">POSTS</h1>
+                        <div className="grid-container">
+                            <PreviewPost />
+                            <PreviewPost />
+                            <PreviewPost />
+                            <PreviewPost />
+                            <PreviewPost />
+                            <PreviewPost />
+                        </div>
                     </div>
                 </div>
             </div>
