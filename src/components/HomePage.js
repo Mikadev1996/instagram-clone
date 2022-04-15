@@ -6,17 +6,9 @@ import MainPostsDisplay from "./MainPostsDisplay";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 
 const HomePage = () => {
-    const [openNewPost, setOpenNewPost] = useState(false);
-
-    function handleCreateNewPostMenu() {
-        setOpenNewPost(openNewPost => !openNewPost);
-    }
-
-
     return (
         <div className="app">
-            <NavBar handleCreateNewPostMenu={handleCreateNewPostMenu}/>
-            {openNewPost && <CreateNewPostMenu handleCreateNewPostMenu={handleCreateNewPostMenu}/>}
+            <NavBar />
             <MainPostsDisplay />
         </div>
     )

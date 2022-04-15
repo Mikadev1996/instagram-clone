@@ -17,11 +17,9 @@ const NewPost = () => {
                 <img src={examplePost} alt="post" />
             </div>
             <div className="post-info">
+                <p>Likes</p>
                 <p>Username: Caption</p>
                 <p>Date Posted</p>
-                <div className="post-comment">
-                    <p>Add a comment</p>
-                </div>
             </div>
         </div>
     )

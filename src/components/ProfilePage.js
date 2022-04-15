@@ -17,18 +17,18 @@ const ProfilePage = () => {
                 </div>}
                 <div className="profile-container">
                     <div className="profile-info">
-                        <div><p>Profile Picture</p></div>
-                        <div>
-                            <div>
-                                <p>Username</p>
+                        <div className="profile-info-picture"><p>Profile Picture</p></div>
+                        <div className="profile-info-details">
+                            <div className="profile-info-detail">
+                                <p className="profile-username">Username</p>
                                 <button>Edit Profile</button>
                             </div>
-                            <ul>
+                            <ul className="profile-info-detail">
                                 <li>No. Posts</li>
                                 <li>No. Followers</li>
                                 <li>No. Following</li>
                             </ul>
-                            <div>
+                            <div className="profile-info-detail">
                                 User Biography
                             </div>
                         </div>
