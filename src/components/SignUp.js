@@ -2,8 +2,8 @@ import React from "react";
 
 const SignUp = () => {
     return (
-         <div>
-             <div>
+         <div className="new-post-menu">
+             <div className="signup-container">
                  <form>
                      <input />
                      <input />

@@ -3,8 +3,8 @@ import CreateNewPostStyle from './styles/CreateNewPostMenu.sass';
 
 const CreateNewPostMenu = ({handleCreateNewPostMenu}) => {
     return (
-        <div id="new-post-menu">
-            <div id="new-post-container">
+        <div className="new-post-menu">
+            <div className="new-post-container">
                 <h1>Create new post</h1>
                 <div>
                     Upload Image
