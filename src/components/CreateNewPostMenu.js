@@ -11,7 +11,7 @@ const CreateNewPostMenu = ({handleCreateNewPostMenu}) => {
                     Select from computer
                 </div>
                 <form>
-                    <input type="text" id="caption" placeholder="Caption your post!"/>
+                    <textarea id="caption" placeholder="Caption your post!" maxLength="50"/>
                     <button onClick={() => {}}>Submit Post</button>
                     <button onClick={(e) => handleCreateNewPostMenu(e)}>Cancel</button>
                 </form>
