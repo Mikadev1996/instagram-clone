@@ -31,11 +31,12 @@ input:focus
   outline: none
 
 .signup-container
+  z-index: 1
   padding: 30px 40px
   border-radius: 5px
   background: #202124
   width: 400px
-  height: 700px
+  height: 600px
   display: flex
   flex-direction: column
   align-items: center
@@ -79,8 +80,20 @@ input:focus
   background: #1a73e8
   color: white
 
+.form button:hover
+  background-color: #6894d3
+  border-color: #6894d3
+
 .form-control.error input
   border-color: darkred
 
 .form-control.success input
   border-color: forestgreen
+
+#form-cancel
+  background-color: darkred
+  border-color: darkred
+
+#form-cancel:hover
+  background-color: red
+  border-color: red

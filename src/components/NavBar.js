@@ -9,14 +9,13 @@ const NavBar = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
 
-    function handleCreateNewPostMenu(e) {
-        e.preventDefault();
-        setOpenNewPost(openNewPost => !openNewPost);
-    }
-
     function handleSignUp(e) {
         e.preventDefault();
         setOpenSignUp(openSignUp => !openSignUp);
+    }
+    function handleCreateNewPostMenu(e) {
+        e.preventDefault();
+        setOpenNewPost(openNewPost => !openNewPost);
     }
 
     return (
@@ -38,7 +37,7 @@ const NavBar = () => {
                     </div>
                 </div>
             </nav>
-            {openSignUp && <SignUp />}
+            {openSignUp && <SignUp handleSignUp={handleSignUp} />}
             {openNewPost && <CreateNewPostMenu handleCreateNewPostMenu={handleCreateNewPostMenu}/>}
         </div>
 

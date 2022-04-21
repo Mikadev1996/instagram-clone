@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import SignUpStyle from './styles/SignUp.sass'
 
-const SignUp = () => {
+const SignUp = ({handleSignUp}) => {
     return (
          <div className="new-post-menu">
              <div className="signup-container">
@@ -26,6 +26,9 @@ const SignUp = () => {
                      </div>
                      <div className="form-control">
                          <button>Confirm</button>
+                     </div>
+                     <div className="form-control">
+                         <button onClick={(e) => handleSignUp(e)} id="form-cancel">Cancel</button>
                      </div>
                  </form>
              </div>
