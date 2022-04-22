@@ -4,15 +4,23 @@ import navbarStyles from './styles/NavBar.sass';
 import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
+import SignIn from "./SignIn";
 
 const NavBar = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
+    const [openSignIn, setOpenSignIn] = useState(false);
 
     function handleSignUp(e) {
         e.preventDefault();
         setOpenSignUp(openSignUp => !openSignUp);
     }
+
+    function handleSignIn(e) {
+        e.preventDefault();
+        setOpenSignIn(openSignIn => !openSignIn);
+    }
+
     function handleCreateNewPostMenu(e) {
         e.preventDefault();
         setOpenNewPost(openNewPost => !openNewPost);
@@ -24,8 +32,8 @@ const NavBar = () => {
                 <div id="nav-content">
                     <div id="nav-left">
                         <img src={logo} alt="logo"/>
-                        <button>Sign In</button>
-                        <button  onClick={(e) => handleSignUp(e)}>Sign Up</button>
+                        <button onClick={(e) => handleSignIn(e)}>Sign In</button>
+                        <button onClick={(e) => handleSignUp(e)}>Sign Up</button>
                     </div>
                     <div id="nav-right">
                         <ul>
@@ -38,6 +46,7 @@ const NavBar = () => {
                 </div>
             </nav>
             {openSignUp && <SignUp handleSignUp={handleSignUp} />}
+            {openSignIn && <SignIn handleSignIn={handleSignIn} />}
             {openNewPost && <CreateNewPostMenu handleCreateNewPostMenu={handleCreateNewPostMenu}/>}
         </div>
 
