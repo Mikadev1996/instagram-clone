@@ -17,6 +17,8 @@ async function getTestData() {
     console.log(test);
 }
 
+getTestData();
+
 ReactDOM.render(
     <React.StrictMode>
         <RouteSwitch />

@@ -1,4 +1,5 @@
 import React from "react";
+import SignInStyles from './styles/SignIn.scss';
 
 const SignIn = ({handleSignIn}) => {
     return (
@@ -18,6 +19,9 @@ const SignIn = ({handleSignIn}) => {
                         <small>Error Message</small>
                     </div>
                     <hr />
+                    <button type="button" className="login-with-google-btn">
+                        Sign in with Google
+                    </button>
                     <div className="form-control">
                         <button>Log In</button>
                     </div>
