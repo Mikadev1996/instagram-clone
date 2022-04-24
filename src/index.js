@@ -59,7 +59,7 @@ function signInUser() {
 
 }
 
-function isUserSignedIn() {
+async function isUserSignedIn() {
     return !!getAuth().currentUser;
 }
 

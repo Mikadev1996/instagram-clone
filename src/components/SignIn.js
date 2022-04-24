@@ -19,9 +19,6 @@ const SignIn = ({handleCancel, handleSignInForm}) => {
                         <small>Error Message</small>
                     </div>
                     <hr />
-                    <button type="button" className="login-with-google-btn">
-                        Sign in with Google
-                    </button>
                     <div className="form-control">
                         <button onClick={e => handleSignInForm(e)}>Log In</button>
                     </div>

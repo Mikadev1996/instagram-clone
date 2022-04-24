@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import logo from './styles/logo.png';
 import navbarStyles from './styles/NavBar.sass';
+import loader from './styles/loader.css';
 import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
@@ -12,6 +13,11 @@ const NavBar = () => {
     const [openSignUp, setOpenSignUp] = useState(false);
     const [openSignIn, setOpenSignIn] = useState(false);
     const [signedIn, setSignedIn] = useState(null);
+
+    isUserSignedIn().then((r) => {
+        setSignedIn(r);
+        console.log(r);
+    })
 
     function handleOpenSignUp(e) {
         e.preventDefault();
@@ -46,6 +52,7 @@ const NavBar = () => {
 
     function testFn() {
         console.log(isUserSignedIn());
+        console.log(getUserName())
     }
 
     return (
@@ -54,6 +61,7 @@ const NavBar = () => {
                 <div id="nav-content">
                     <div id="nav-left">
                         <img src={logo} alt="logo"/>
+                        <div className="loader"></div>
                         <button onClick={(e) => handleOpenSignIn(e)}>Sign In</button>
                         <button onClick={(e) => handleOpenSignUp(e)}>Sign Up</button>
                         <button onClick={() => testFn()}>Test Button</button>
