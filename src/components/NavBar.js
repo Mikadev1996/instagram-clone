@@ -5,25 +5,47 @@ import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
+import {signUpUser, signOutUser, isUserSignedIn, getUserName, signInUser} from "../index";
 
 const NavBar = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
     const [openSignIn, setOpenSignIn] = useState(false);
+    const [signedIn, setSignedIn] = useState(null);
 
-    function handleSignUp(e) {
+    function handleOpenSignUp(e) {
         e.preventDefault();
-        setOpenSignUp(openSignUp => !openSignUp);
+        setOpenSignUp(true);
     }
 
-    function handleSignIn(e) {
+    function handleOpenSignIn(e) {
         e.preventDefault();
-        setOpenSignIn(openSignIn => !openSignIn);
+        setOpenSignIn(true);
+    }
+
+    function handleSignUpForm(e) {
+        e.preventDefault();
+        signUpUser();
+    }
+
+    function handleSignInForm(e) {
+        e.preventDefault();
+        signInUser();
+    }
+
+    function handleCancel(e) {
+        e.preventDefault();
+        setOpenSignUp(false);
+        setOpenSignIn(false);
     }
 
     function handleCreateNewPostMenu(e) {
         e.preventDefault();
         setOpenNewPost(openNewPost => !openNewPost);
+    }
+
+    function testFn() {
+        console.log(isUserSignedIn());
     }
 
     return (
@@ -32,8 +54,9 @@ const NavBar = () => {
                 <div id="nav-content">
                     <div id="nav-left">
                         <img src={logo} alt="logo"/>
-                        <button onClick={(e) => handleSignIn(e)}>Sign In</button>
-                        <button onClick={(e) => handleSignUp(e)}>Sign Up</button>
+                        <button onClick={(e) => handleOpenSignIn(e)}>Sign In</button>
+                        <button onClick={(e) => handleOpenSignUp(e)}>Sign Up</button>
+                        <button onClick={() => testFn()}>Test Button</button>
                     </div>
                     <div id="nav-right">
                         <ul>
@@ -45,8 +68,8 @@ const NavBar = () => {
                     </div>
                 </div>
             </nav>
-            {openSignUp && <SignUp handleSignUp={handleSignUp} />}
-            {openSignIn && <SignIn handleSignIn={handleSignIn} />}
+            {openSignUp && <SignUp handleCancel={handleCancel} handleSignUpForm={handleSignUpForm} /> }
+            {openSignIn && <SignIn handleCancel={handleCancel} handleSignInForm={handleSignInForm}/>}
             {openNewPost && <CreateNewPostMenu handleCreateNewPostMenu={handleCreateNewPostMenu}/>}
         </div>
 
