@@ -10,20 +10,20 @@ const SignIn = ({handleCancel, handleSignInForm}) => {
                     <div className="form-control">
                         <label htmlFor="email" >Email</label>
                         <input type="email" placeholder="Email" id="email-login" required/>
-                        <small>Error Message</small>
+                        <small id="email-login-error"></small>
                     </div>
 
                     <div className="form-control">
                         <label htmlFor="password">Password</label>
                         <input type="password" placeholder="Password" id="password-login" maxLength="16" required/>
-                        <small>Error Message</small>
+                        <small id="password-login-error"></small>
                     </div>
                     <hr />
-                    <div className="form-control">
-                        <button onClick={e => handleSignInForm(e)}>Log In</button>
+                    <div className="form-control ">
+                        <button className="form-confirm" onClick={e => handleSignInForm(e)}>Log In</button>
                     </div>
-                    <div className="form-cancel">
-                        <button onClick={e => handleCancel(e)}>Cancel</button>
+                    <div>
+                        <button  className="form-cancel" onClick={e => handleCancel(e)}>Cancel</button>
                     </div>
                 </form>
             </div>

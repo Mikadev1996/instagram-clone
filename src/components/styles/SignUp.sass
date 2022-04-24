@@ -36,7 +36,7 @@ input:focus
   border-radius: 5px
   background: #202124
   width: 400px
-  height: 600px
+  height: 650px
   display: flex
   flex-direction: column
   align-items: center
@@ -68,7 +68,8 @@ input:focus
   color: darkred
   visibility: visible
 
-
+.form-confirm
+  background: #3498db
 
 .form button
   margin: 0
@@ -81,8 +82,10 @@ input:focus
   //color: white
 
 .form button:hover
-  background-color: #6894d3
-  border-color: #6894d3
+  text-decoration: underline
+  font-weight: bold
+  box-shadow: 0 1px 1px rgb(0 0 0 / 10%)
+
 
 .form-control.error input
   border-color: darkred
@@ -90,10 +93,7 @@ input:focus
 .form-control.success input
   border-color: forestgreen
 
-#form-cancel
-  background-color: darkred
-  border-color: darkred
 
-#form-cancel:hover
-  background-color: red
-  border-color: red
+.form-cancel
+  background-color: #9a9a9a
+  border-color: #9a9a9a

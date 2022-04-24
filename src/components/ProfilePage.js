@@ -1,11 +1,22 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import NavBar from "./NavBar";
 import ProfileStyle from './styles/ProfilePage.sass';
 import PreviewPost from "./PreviewPost";
+import {getUserName, isUserSignedIn} from "../index";
 
 const ProfilePage = () => {
     const [editProfile, setEditProfile] = useState(false);
+    const [signedIn, setSignedIn] = useState(null);
+    const [username, setUsername] = useState("");
 
+    useEffect(() => {
+        isUserSignedIn().then((r) => {
+            setSignedIn(r);
+        })
+        if (signedIn) {
+            setUsername(getUserName())
+        }
+    })
     return (
         <div className="app">
             <NavBar />
@@ -20,7 +31,7 @@ const ProfilePage = () => {
                         <div className="profile-info-picture"><p>Profile Picture</p></div>
                         <div className="profile-info-details">
                             <div className="profile-info-detail">
-                                <p className="profile-username">Username</p>
+                                <p className="profile-username">{username}</p>
                                 <button>Edit Profile</button>
                             </div>
                             <ul className="profile-info-detail">

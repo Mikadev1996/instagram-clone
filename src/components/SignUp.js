@@ -8,6 +8,11 @@ const SignUp = ({handleCancel, handleSignUpForm}) => {
                  <h1 className="header" >Sign Up</h1>
                  <form className="form">
                      <div className="form-control">
+                         <label htmlFor="username" >Username</label>
+                         <input type="text" placeholder="Username" id="username" />
+                         <small>Error Message</small>
+                     </div>
+                     <div className="form-control">
                          <label htmlFor="email" >Email</label>
                          <input type="email" placeholder="Email" id="email" />
                          <small>Error Message</small>
@@ -24,11 +29,11 @@ const SignUp = ({handleCancel, handleSignUpForm}) => {
                          <input type="password" placeholder="Password Check" id="password-check" maxLength="16" />
                          <small>Error Message</small>
                      </div>
-                     <div className="form-control">
-                         <button onClick={e => handleSignUpForm(e)}>Confirm</button>
+                     <div className="form-control ">
+                         <button className="form-confirm" onClick={e => handleSignUpForm(e)}>Confirm</button>
                      </div>
                      <div className="form-control">
-                         <button onClick={(e) => handleCancel(e)} id="form-cancel">Cancel</button>
+                         <button onClick={(e) => handleCancel(e)} className="form-cancel">Cancel</button>
                      </div>
                  </form>
              </div>
