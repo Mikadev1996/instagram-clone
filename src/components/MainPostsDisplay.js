@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import NewPost from "./NewPost";
 import MainPostStyle from './styles/MainPostsDisplay.sass'
-import {getProfilePicUrl, getUserName, initFirebaseAuth, isUserSignedIn} from "../index";
-import {getAuth, onAuthStateChanged} from "firebase/auth";
+import {getProfilePicUrl} from "../index";
+import {getAuth} from "firebase/auth";
 
 //TODO: MAP POSTS FROM DATABASE TO NEWPOST COMPONENT
 

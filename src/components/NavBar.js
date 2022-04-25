@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage} from "../index";
+import {isUserSignedIn, getProfilePicUrl, getUserName, uploadImage} from "../index";
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
 import handleFormError from "./formErrors";
 
@@ -22,7 +22,7 @@ const NavBar = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             setSignedIn(true);
-            setUsername(user.displayName);
+            setUsername(getUserName());
             setUserProfilePic(getProfilePicUrl());
         }
         else {
@@ -38,6 +38,19 @@ const NavBar = () => {
     function handleOpenSignIn(e) {
         e.preventDefault();
         setOpenSignIn(true);
+    }
+
+    function handleSignOut(e) {
+        e.preventDefault();
+        signOut(getAuth()).then(() => {
+            setSignedIn(false);
+        })
+            .then(() => {
+                isUserSignedIn().then(r => console.log(r));
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
     }
 
     function handleSignUpForm(e) {
@@ -95,18 +108,16 @@ const NavBar = () => {
         setOpenNewPost(openNewPost => !openNewPost);
     }
 
-    function handleSignOut(e) {
+    function handleCreateNewPost(e) {
         e.preventDefault();
-        signOut(getAuth()).then(() => {
-            setSignedIn(false);
-        })
-            .then(() => {
-                isUserSignedIn().then(r => console.log(r));
-            })
-            .catch(error => {
-            console.log(error.message);
-        })
+        const image = document.getElementById("user-upload-image").files[0] ;
+        const imageName = new Date() + "-" + image.name;
+        const metadata = {
+            contentType: image.type
+        }
+        uploadImage(image, metadata, imageName);
     }
+
 
     return (
         <div>
@@ -124,15 +135,15 @@ const NavBar = () => {
                     <div id="nav-right">
                         <ul>
                             <Link to="/"><li>Home</li></Link>
-                            <li onClick={(e) => handleCreateNewPostMenu(e)}>New Post</li>
-                            <Link to="/user-page"><li onClick={() => isUserSignedIn().then(r => console.log(r))}>Profile</li></Link>
+                            {signedIn && <li onClick={(e) => handleCreateNewPostMenu(e)}>New Post</li>}
+                            {signedIn && <Link to="/user-page"><li onClick={() => isUserSignedIn().then(r => console.log(r))}>Profile</li></Link>}
                         </ul>
                     </div>
                 </div>
             </nav>
             {openSignUp && <SignUp handleCancel={handleCancel} handleSignUpForm={handleSignUpForm} /> }
             {openSignIn && <SignIn handleCancel={handleCancel} handleSignInForm={handleSignInForm}/>}
-            {openNewPost && <CreateNewPostMenu handleCreateNewPostMenu={handleCreateNewPostMenu}/>}
+            {openNewPost && <CreateNewPostMenu handleCreateNewPostMenu={handleCreateNewPostMenu} handleCreateNewPost={handleCreateNewPost}/>}
         </div>
 
     )
