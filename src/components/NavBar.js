@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {isUserSignedIn, getUserName} from "../index";
+import {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage} from "../index";
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
 import handleFormError from "./formErrors";
 
@@ -16,16 +16,16 @@ const NavBar = () => {
     const [openSignIn, setOpenSignIn] = useState(false);
     const [signedIn, setSignedIn] = useState(null);
     const [username, setUsername] = useState("");
+    const [userProfilePic, setUserProfilePic] = useState(null);
 
-    useEffect(() => {
-        isUserSignedIn().then((r) => {
-            setSignedIn(r);
-        })
-        if (signedIn) {
-            setUsername(getUserName())
+    const auth = getAuth()
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            setSignedIn(true);
+            setUsername(user.displayName);
+            setUserProfilePic(getProfilePicUrl());
         }
-
-    }, [signedIn]);
+    })
 
     function handleOpenSignUp(e) {
         e.preventDefault();
@@ -51,8 +51,7 @@ const NavBar = () => {
             .then((r) => {
                 updateProfile(auth.currentUser, {
                     displayName: username,
-                }).then(() => {
-                    console.log("username updated?")
+                    photoURL: "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9a4b3.appspot.com/o/default_photo.png?alt=media&token=97360e51-f17e-4989-9ced-a0bd4f066e2b"
                 })
             })
             .catch((error) => {
@@ -123,8 +122,7 @@ const NavBar = () => {
                         <ul>
                             <Link to="/"><li>Home</li></Link>
                             <li onClick={(e) => handleCreateNewPostMenu(e)}>New Post</li>
-                            <li>Notifications</li>
-                            <Link to="/user-page"><li onClick={() => console.log(getUserName())}>Profile</li></Link>
+                            <Link to="/user-page"><li onClick={() => isUserSignedIn().then(r => console.log(r))}>Profile</li></Link>
                         </ul>
                     </div>
                 </div>

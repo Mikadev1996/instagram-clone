@@ -4,44 +4,16 @@ import RouteSwitch from "./RouteSwitch";
 import {getFirebaseConfig} from "./firebase-config";
 import {initializeApp} from "firebase/app";
 import {collection, getDocs, getFirestore} from "firebase/firestore";
-import {getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword} from 'firebase/auth';
+import {getAuth, onAuthStateChanged} from 'firebase/auth';
+import {getDownloadURL, getStorage, ref} from "firebase/storage";
 
 const firebaseAppConfig = getFirebaseConfig();
 const app = initializeApp(firebaseAppConfig);
 const db = getFirestore(app);
-
-// function signOutUser() {
-//     signOut(getAuth()).then(() => {
-//     }).catch(error => {
-//         console.log(error.message);
-//     })
-// }
-//
-// function signUpUser() {
-//     const email = document.getElementById("email").value;
-//     const password = document.getElementById("password").value;
-//     const auth = getAuth();
-//
-//     auth.onAuthStateChanged(user => {
-//         if (user) {
-//             console.log(user);
-//         }
-//     })
-//
-//     createUserWithEmailAndPassword(auth, email, password)
-//         .then((userCredential) => {
-//             const user = userCredential.user;
-//             console.log(user);
-//             console.log(isUserSignedIn());
-//         })
-//         .catch((error) => {
-//             const errorCode = error.code;
-//             const errorMessage = error.message;
-//             console.log(errorCode, errorMessage);
-//         })
-//
-// }
-
+async function getDefaultImage() {
+    const defaultImageRef = ref(getStorage(), "gs://instagram-clone-9a4b3.appspot.com/default_photo.png");
+    return await getDownloadURL(defaultImageRef);
+}
 
 async function isUserSignedIn() {
     return !!getAuth().currentUser;
@@ -51,6 +23,20 @@ function getUserName() {
     return getAuth().currentUser.displayName;
 }
 
+function getProfilePicUrl() {
+    return getAuth().currentUser.photoURL;
+}
+
+function initFirebaseAuth() {
+    onAuthStateChanged(getAuth(), authStateObserver);
+}
+function authStateObserver(user) {
+    if (user) {
+        const profilePicUrl = getProfilePicUrl();
+        const userName = getUserName();
+        console.log(profilePicUrl, userName);
+    }
+}
 ReactDOM.render(
     <React.StrictMode>
         <RouteSwitch />
@@ -58,4 +44,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, initFirebaseAuth};
