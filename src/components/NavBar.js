@@ -25,6 +25,9 @@ const NavBar = () => {
             setUsername(user.displayName);
             setUserProfilePic(getProfilePicUrl());
         }
+        else {
+            setSignedIn(false);
+        }
     })
 
     function handleOpenSignUp(e) {

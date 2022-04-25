@@ -17,6 +17,11 @@ const MainPostsDisplay = () => {
             setUsername(user.displayName);
             setUserProfilePic(getProfilePicUrl());
         }
+        else {
+            setSignedIn(false);
+            setUsername("");
+            setUserProfilePic(null);
+        }
     })
 
     useEffect(() => {
