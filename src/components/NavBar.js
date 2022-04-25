@@ -108,6 +108,8 @@ const NavBar = () => {
         setOpenNewPost(openNewPost => !openNewPost);
     }
 
+    //TODO: USER UPLOAD RULES?
+
     function handleCreateNewPost(e) {
         e.preventDefault();
         const image = document.getElementById("user-upload-image").files[0] ;
