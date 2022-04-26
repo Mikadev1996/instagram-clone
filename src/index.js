@@ -23,13 +23,18 @@ function getUserName() {
     return getAuth().currentUser.displayName;
 }
 
+function getUserEmail() {
+    return getAuth().currentUser.email.split("@")[0];
+}
+
+
 function getProfilePicUrl() {
     return getAuth().currentUser.photoURL;
 }
 
 function uploadImage(file, metadata, name) {
     const storage = getStorage();
-    const storageRef = ref(storage, 'images/' + name);
+    const storageRef = ref(storage, 'images/' + `${getUserEmail()}/` + name);
     const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
 // Listen for state changes, errors, and completion of the upload.
@@ -80,4 +85,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, uploadImage};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, uploadImage, getUserEmail};
