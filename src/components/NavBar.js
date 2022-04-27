@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {isUserSignedIn, getProfilePicUrl, getUserName, getUserEmail} from "../index";
+import {isUserSignedIn, getProfilePicUrl, getUserName, getUserEmail, saveImagePost} from "../index";
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
 import handleFormError from "./formErrors";
 import {getStorage, ref, uploadBytesResumable} from "firebase/storage";
@@ -117,46 +117,14 @@ const NavBar = () => {
     function handleCreateNewPost(e) {
         e.preventDefault();
         const image = document.getElementById("user-upload-image").files[0] ;
-        const imageName = new Date() + "-" + image.name;
-        const metadata = {
-            contentType: image.type
-        }
-        uploadImage(image, metadata, imageName, testCallback);
+        saveImagePost(image)
+            .then(r => {
+                console.log(r)
+                console.log("complete?");
+            })
     }
 
-    function uploadImage(file, metadata, name) {
-        const storage = getStorage();
-        const storageRef = ref(storage, 'images/' + `${getUserEmail()}/` + name);
-        const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
-        uploadTask.on('state_changed',
-            (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                switch (snapshot.state) {
-                    case 'paused':
-                        console.log('Upload is paused');
-                        break;
-                    case 'running':
-                        console.log('Upload is running');
-                        break;
-                }
-            },
-            (error) => {
-                switch (error.code) {
-                    case 'storage/unauthorized':
-                        break;
-                    case 'storage/canceled':
-                        break;
-                    case 'storage/unknown':
-                        break;
-                }
-            },
-            () => {
-                setOpenNewPost(false);
-            }
-        );
-    }
 
     return (
         <div>
