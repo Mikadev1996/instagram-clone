@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from "react";
-import logo from './styles/logo.png';
+import logo from './styles/logo-white.png';
 import navbarStyles from './styles/NavBar.sass';
 import loader from './styles/loader.css';
 import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {isUserSignedIn, getProfilePicUrl, getUserName, uploadImage} from "../index";
+import {isUserSignedIn, getProfilePicUrl, getUserName, getUserEmail} from "../index";
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
 import handleFormError from "./formErrors";
+import {getStorage, ref, uploadBytesResumable} from "firebase/storage";
 
 const NavBar = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
@@ -109,6 +110,9 @@ const NavBar = () => {
     }
 
     //TODO: USER UPLOAD RULES?
+    function testCallback() {
+        console.log("file upload finished")
+    }
 
     function handleCreateNewPost(e) {
         e.preventDefault();
@@ -117,9 +121,42 @@ const NavBar = () => {
         const metadata = {
             contentType: image.type
         }
-        uploadImage(image, metadata, imageName);
+        uploadImage(image, metadata, imageName, testCallback);
     }
 
+    function uploadImage(file, metadata, name) {
+        const storage = getStorage();
+        const storageRef = ref(storage, 'images/' + `${getUserEmail()}/` + name);
+        const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        break;
+                    case 'storage/canceled':
+                        break;
+                    case 'storage/unknown':
+                        break;
+                }
+            },
+            () => {
+                setOpenNewPost(false);
+            }
+        );
+    }
 
     return (
         <div>
@@ -128,7 +165,7 @@ const NavBar = () => {
                     {signedIn === null && <div id="nav-left"><div className="loader"></div></div>}
                     {signedIn !== null &&
                     <div id="nav-left">
-                        <img src={logo} alt="logo"/>
+                        <img src={logo} alt="logo" className="nav-logo"/>
                         {signedIn === false && <button onClick={(e) => handleOpenSignIn(e)}>Sign In</button>}
                         {signedIn === false && <button onClick={(e) => handleOpenSignUp(e)}>Sign Up</button>}
                         {signedIn === true && <button onClick={(e) => handleSignOut(e)}>Sign Out</button>}
@@ -138,7 +175,7 @@ const NavBar = () => {
                         <ul>
                             <Link to="/"><li>Home</li></Link>
                             {signedIn && <li onClick={(e) => handleCreateNewPostMenu(e)}>New Post</li>}
-                            {signedIn && <Link to="/user-page"><li onClick={() => isUserSignedIn().then(r => console.log(r))}>Profile</li></Link>}
+                            {signedIn && <Link to="/user-page"><img src={userProfilePic} alt="user-profile-pic" className="nav-profile-pic"/></Link>}
                         </ul>
                     </div>
                 </div>
