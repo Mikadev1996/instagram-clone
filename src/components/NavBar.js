@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {isUserSignedIn, getProfilePicUrl, getUserName, getUserEmail, saveImagePost} from "../index";
+import {isUserSignedIn, getProfilePicUrl, getUserName, saveImagePost} from "../index";
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
 import handleFormError from "./formErrors";
 import {getStorage, ref, uploadBytesResumable} from "firebase/storage";
@@ -109,22 +109,16 @@ const NavBar = () => {
         setOpenNewPost(openNewPost => !openNewPost);
     }
 
-    //TODO: USER UPLOAD RULES?
-    function testCallback() {
-        console.log("file upload finished")
-    }
-
     function handleCreateNewPost(e) {
         e.preventDefault();
-        const image = document.getElementById("user-upload-image").files[0] ;
-        saveImagePost(image)
+        const image = document.getElementById("user-upload-image").files[0];
+        const caption = document.getElementById("image-caption").value;
+        saveImagePost(image, caption)
             .then(r => {
-                console.log(r)
-                console.log("complete?");
+                console.log(r);
+                setOpenNewPost(false);
             })
     }
-
-
 
     return (
         <div>

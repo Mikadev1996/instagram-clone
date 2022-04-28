@@ -1,6 +1,5 @@
 import React from "react";
 import CreateNewPostStyle from './styles/CreateNewPostMenu.sass';
-import {uploadImage} from "../index";
 
 const CreateNewPostMenu = ({handleCreateNewPostMenu, handleCreateNewPost}) => {
     return (
@@ -13,7 +12,7 @@ const CreateNewPostMenu = ({handleCreateNewPostMenu, handleCreateNewPost}) => {
                     Select from computer
                 </div>
                 <form>
-                    <textarea id="caption" placeholder="Caption your post!" maxLength="50"/>
+                    <textarea id="image-caption" placeholder="Caption your post!" maxLength="50"/>
                     <button onClick={(e) => {handleCreateNewPost(e)}}>Submit Post</button>
                     <button onClick={(e) => handleCreateNewPostMenu(e)}>Cancel</button>
                 </form>

@@ -1,24 +1,23 @@
 import React from "react";
-import examplePost from './styles/ExamplePost.png';
 import NewPostStyle from './styles/NewPost.sass';
 
-const NewPost = () => {
+const NewPost = ({postUrl, profilePic, username}) => {
     return (
         <div className="post">
             <div className="post-nav">
                 <div>
-                    <p>Profile Pic</p>
+                    <img className="nav-profile-pic" alt="profile-pic" src={profilePic} />
                 </div>
                 <div>
                     <p>Username</p>
                 </div>
             </div>
             <div>
-                <img src={examplePost} alt="post" />
+                <img src={postUrl} alt="post" className="post-image"/>
             </div>
             <div className="post-info">
                 <p>Likes</p>
-                <p>Username: Caption</p>
+                <p>{username}: Caption</p>
                 <p>Date Posted</p>
             </div>
         </div>

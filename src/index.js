@@ -5,7 +5,7 @@ import {getFirebaseConfig} from "./firebase-config";
 import {initializeApp} from "firebase/app";
 import {getFirestore, addDoc, collection, serverTimestamp, updateDoc} from "firebase/firestore";
 import {getAuth} from 'firebase/auth';
-import {getDownloadURL, getStorage, ref, uploadBytesResumable,} from "firebase/storage";
+import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
 
 const firebaseAppConfig = getFirebaseConfig();
 const app = initializeApp(firebaseAppConfig);
@@ -66,11 +66,13 @@ function uploadImage(file, metadata, name) {
     );
 }
 
-async function saveImagePost(file) {
+
+async function saveImagePost(file, caption) {
     try {
-        const imageRef = await addDoc(collection(getFirestore(), 'messages'), {
+        const imageRef = await addDoc(collection(getFirestore(), 'posts'), {
             name: getUserName(),
             imageUrl: "LOADING_IMAGE_URL",
+            caption: caption,
             profilePicUrl: getProfilePicUrl(),
             timestamp: serverTimestamp()
         });
