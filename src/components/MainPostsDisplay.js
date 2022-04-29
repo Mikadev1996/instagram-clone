@@ -1,80 +1,61 @@
 import React, {useEffect, useState} from "react";
 import NewPost from "./NewPost";
 import MainPostStyle from './styles/MainPostsDisplay.sass'
-import {getProfilePicUrl} from "../index";
+import {getProfilePicUrl, loadImages} from "../index";
 import {getAuth} from "firebase/auth";
-import {collection, getFirestore, onSnapshot, query, orderBy, limit} from "firebase/firestore";
+import examplePost from './styles/ExamplePost.png';
+import {collection, getDocs, getFirestore, limit, onSnapshot, orderBy, query} from "firebase/firestore";
 
 //TODO: MAP POSTS FROM DATABASE TO NEWPOST COMPONENT
 
 const MainPostsDisplay = () => {
-    const [signedIn, setSignedIn] = useState(null);
     const [username, setUsername] = useState("");
     const [userProfilePic, setUserProfilePic] = useState(null);
     const [images, setImages] = useState([]);
+    const [queryImages, setQueryImages] = useState([]);
+    const [newPostCount, setNewPostCount] = useState(0);
+
     const auth = getAuth()
     auth.onAuthStateChanged((user) => {
         if (user) {
-            setSignedIn(true);
             setUsername(user.displayName);
             setUserProfilePic(getProfilePicUrl());
         }
         else {
-            setSignedIn(false);
             setUsername("");
             setUserProfilePic(null);
         }
     })
 
-    function loadImages() {
-        // Create the query to load the last 12 messages and listen for new ones.
-        const recentMessagesQuery = query(collection(getFirestore(), 'messages'), orderBy('timestamp', 'desc'), limit(12));
+    useEffect(() => {
+        async function loadImages() {
+            const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp'), limit(3));
+            const querySnapshot = await getDocs(recentImagesQuery);
+            querySnapshot.forEach((doc) => {
+                setQueryImages( queryImages => [...queryImages, doc.data()]);
+            })
 
-        // Start listening to the query.
-        onSnapshot(recentMessagesQuery, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                let image = change.doc.data();
-                setImages([image]);
-                // displayImages(change.doc.id, message.timestamp, message.name,
-                //     message.text, message.profilePicUrl, message.imageUrl);
+            onSnapshot(recentImagesQuery, (snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    setNewPostCount(newPostCount => newPostCount + 1);
+                    let image = change.doc.data();
+                    setQueryImages(queryImages => [...queryImages, image]);
+                });
             });
+            setImages(queryImages);
+        }
+        loadImages().then(r => {
+            console.log(images);
         });
-    }
-    loadImages();
-
-    // function displayImages(id, timestamp, name, text, picUrl, imageUrl) {
-    //     const div = document.getElementById(id)
-    //
-    //     // profile picture
-    //     if (picUrl) {
-    //         div.querySelector('.pic').style.backgroundImage = 'url(' + addSizeToGoogleProfilePic(picUrl) + ')';
-    //     }
-    //
-    //     div.querySelector('.name').textContent = name;
-    //     const messageElement = div.querySelector('.message');
-    //
-    //     if (imageUrl) { // If the message is an image.
-    //         const image = document.createElement('img');
-    //         image.addEventListener('load', function() {
-    //             messageListElement.scrollTop = messageListElement.scrollHeight;
-    //         });
-    //         image.src = imageUrl + '&' + new Date().getTime();
-    //         messageElement.innerHTML = '';
-    //         messageElement.appendChild(image);
-    //     }
-    //     // Show the card fading-in and scroll to view the new message.
-    //     setTimeout(function() {div.classList.add('visible')}, 1);
-    //     messageListElement.scrollTop = messageListElement.scrollHeight;
-    //     messageInputElement.focus();
-    // }
-
+    }, [queryImages]);
 
     return (
         <div className="content">
             <div id="container">
+                <NewPost profilePic={userProfilePic} postUrl={examplePost} username={username}/>
                 {(images.length > 0) && images.map((data) => {
                     return (
-                        <NewPost postUrl={data.imageUrl} profilePic={data.profilePicUrl} username={data.name}/>
+                        <NewPost postUrl={data.imageUrl} profilePic={data.profilePicUrl} username={username} />
                     )
                 })}
             </div>

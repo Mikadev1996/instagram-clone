@@ -9,7 +9,7 @@ const NewPost = ({postUrl, profilePic, username}) => {
                     <img className="nav-profile-pic" alt="profile-pic" src={profilePic} />
                 </div>
                 <div>
-                    <p>Username</p>
+                    <p>{username}</p>
                 </div>
             </div>
             <div>

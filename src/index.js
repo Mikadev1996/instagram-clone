@@ -3,9 +3,21 @@ import ReactDOM from 'react-dom';
 import RouteSwitch from "./RouteSwitch";
 import {getFirebaseConfig} from "./firebase-config";
 import {initializeApp} from "firebase/app";
-import {getFirestore, addDoc, collection, serverTimestamp, updateDoc} from "firebase/firestore";
+import {
+    getFirestore,
+    addDoc,
+    collection,
+    serverTimestamp,
+    updateDoc,
+    query,
+    orderBy,
+    limit,
+    onSnapshot,
+    getDocs
+} from "firebase/firestore";
 import {getAuth} from 'firebase/auth';
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
+import NewPost from "./components/NewPost";
 
 const firebaseAppConfig = getFirebaseConfig();
 const app = initializeApp(firebaseAppConfig);
@@ -32,40 +44,6 @@ function getUserEmail() {
 function getProfilePicUrl() {
     return getAuth().currentUser.photoURL;
 }
-
-function uploadImage(file, metadata, name) {
-    const storage = getStorage();
-    const storageRef = ref(storage, 'images/' + `${getUserEmail()}/` + name);
-    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-
-    uploadTask.on('state_changed',
-        (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            switch (snapshot.state) {
-                case 'paused':
-                    console.log('Upload is paused');
-                    break;
-                case 'running':
-                    console.log('Upload is running');
-                    break;
-            }
-        },
-        (error) => {
-            switch (error.code) {
-                case 'storage/unauthorized':
-                    break;
-                case 'storage/canceled':
-                    break;
-                case 'storage/unknown':
-                    break;
-            }
-        },
-        () => {
-        }
-    );
-}
-
 
 async function saveImagePost(file, caption) {
     try {
@@ -95,6 +73,28 @@ async function saveImagePost(file, caption) {
     }
 }
 
+async function loadImages() {
+    let tempArr = [];
+    const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp', 'desc'), limit(12));
+    const querySnapshot = await getDocs(recentImagesQuery);
+    querySnapshot.forEach((doc) => {
+        tempArr.push(doc.data());
+    })
+    onSnapshot(recentImagesQuery, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            let image = change.doc.data();
+            displayImages(change.doc.id, image.timestamp, image.name, image.profilePicUrl, image.imageUrl);
+        });
+    });
+}
+
+function displayImages(id, timestamp, name, picUrl, imageUrl) {
+    const imageContainer = document.getElementById("container");
+    const image = <NewPost profilePic={picUrl} postUrl={imageUrl}/>
+    // imageContainer.innerHTML = '';
+    // imageContainer.appendChild(image);
+}
+
 ReactDOM.render(
     <React.StrictMode>
         <RouteSwitch />
@@ -102,4 +102,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, getUserEmail, saveImagePost};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, getUserEmail, saveImagePost, loadImages};
