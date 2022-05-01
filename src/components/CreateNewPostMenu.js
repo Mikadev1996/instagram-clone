@@ -8,8 +8,8 @@ const CreateNewPostMenu = ({handleCreateNewPostMenu, handleCreateNewPost}) => {
         <div className="new-post-menu">
             <div className="new-post-container">
                 <h1>Create new post</h1>
-                <div>
-                    {!isLoading && <input type="file" accept="image/png, image/jpeg" name="Upload Image" id="user-upload-image"/>}
+                <div className="new-post-inputs">
+                    {!isLoading && <input type="file" accept="image/png, image/jpeg" name="Upload Image" id="user-upload-image" className="custom-file-input"/>}
                     {isLoading && <div className="spinner"></div>}
                 </div>
                 <form>

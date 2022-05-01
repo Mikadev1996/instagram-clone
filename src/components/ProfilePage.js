@@ -2,37 +2,49 @@ import React, {useEffect, useState} from "react";
 import NavBar from "./NavBar";
 import ProfileStyle from './styles/ProfilePage.sass';
 import PreviewPost from "./PreviewPost";
-import {getUserName, isUserSignedIn} from "../index";
+import {getProfilePicUrl, getUserName, isUserSignedIn} from "../index";
+import EditProfileMenu from "./EditProfileMenu";
+import {getAuth} from "firebase/auth";
 
 const ProfilePage = () => {
     const [editProfile, setEditProfile] = useState(false);
     const [signedIn, setSignedIn] = useState(null);
     const [username, setUsername] = useState("");
+    const [userProfilePic, setUserProfilePic] = useState(null);
 
-    useEffect(() => {
-        isUserSignedIn().then((r) => {
-            setSignedIn(r);
-        })
-        if (signedIn) {
-            setUsername(getUserName())
+    const auth = getAuth()
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            setSignedIn(true);
+            setUsername(getUserName());
+            setUserProfilePic(getProfilePicUrl());
+        }
+        else {
+            setSignedIn(false);
         }
     })
+
+    const handleEditProfile = () => {
+        setEditProfile(editProfile => !editProfile);
+    }
+
+    const updateProfile = () => {
+        const newProfilePic = document.getElementById("new-profile-image").files[0];
+        const profileBio = document.getElementById("new-profile-bio");
+    }
+
     return (
         <div className="app">
             <NavBar />
             <div className="content">
-                {editProfile && <div className="edit-profile">
-                    <input type="text" placeholder="Enter a biography" maxLength="50"/>
-                    <button>Submit</button>
-                    <button onClick={() => setEditProfile(false)}>Cancel</button>
-                </div>}
+                {editProfile && <EditProfileMenu handleEditProfile={handleEditProfile} updateProfile={updateProfile}/>}
                 <div className="profile-container">
                     <div className="profile-info">
-                        <div className="profile-info-picture"><p>Profile Picture</p></div>
+                        <div className="profile-info-picture"><img src={userProfilePic} alt="user-profile-pic" className="page-profile-pic"/></div>
                         <div className="profile-info-details">
                             <div className="profile-info-detail">
                                 <p className="profile-username">{username}</p>
-                                <button>Edit Profile</button>
+                                <button onClick={() => handleEditProfile()}>Edit Profile</button>
                             </div>
                             <ul className="profile-info-detail">
                                 <li>No. Posts</li>

@@ -36,11 +36,6 @@ function getUserName() {
     return getAuth().currentUser.displayName;
 }
 
-function getUserEmail() {
-    return getAuth().currentUser.email.split("@")[0];
-}
-
-
 function getProfilePicUrl() {
     return getAuth().currentUser.photoURL;
 }
@@ -74,28 +69,6 @@ async function saveImagePost(file, caption) {
     }
 }
 
-async function loadImages() {
-    let tempArr = [];
-    const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp', 'desc'), limit(12));
-    const querySnapshot = await getDocs(recentImagesQuery);
-    querySnapshot.forEach((doc) => {
-        tempArr.push(doc.data());
-    })
-    onSnapshot(recentImagesQuery, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            let image = change.doc.data();
-            displayImages(change.doc.id, image.timestamp, image.name, image.profilePicUrl, image.imageUrl);
-        });
-    });
-}
-
-function displayImages(id, timestamp, name, picUrl, imageUrl) {
-    const imageContainer = document.getElementById("container");
-    const image = <NewPost profilePic={picUrl} postUrl={imageUrl}/>
-    // imageContainer.innerHTML = '';
-    // imageContainer.appendChild(image);
-}
-
 ReactDOM.render(
     <React.StrictMode>
         <RouteSwitch />
@@ -103,4 +76,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, getUserEmail, saveImagePost, loadImages};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost};

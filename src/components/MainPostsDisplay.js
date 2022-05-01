@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import NewPost from "./NewPost";
 import MainPostStyle from './styles/MainPostsDisplay.sass'
-import {getProfilePicUrl, loadImages} from "../index";
+import {getProfilePicUrl} from "../index";
 import {getAuth} from "firebase/auth";
 import examplePost from './styles/ExamplePost.png';
 import {collection, getDocs, getFirestore, limit, onSnapshot, orderBy, query} from "firebase/firestore";

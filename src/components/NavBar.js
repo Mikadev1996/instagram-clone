@@ -9,7 +9,6 @@ import SignIn from "./SignIn";
 import {isUserSignedIn, getProfilePicUrl, getUserName, saveImagePost} from "../index";
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
 import handleFormError from "./formErrors";
-import {getStorage, ref, uploadBytesResumable} from "firebase/storage";
 
 const NavBar = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
