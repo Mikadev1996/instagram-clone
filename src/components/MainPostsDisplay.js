@@ -42,8 +42,9 @@ const MainPostsDisplay = () => {
                     console.log("onSnapshot");
                     snapshot.docChanges().forEach((change) => {
                         let image = change.doc.data();
-                        console.log(image);
-                        setDisplayedPosts(displayedPosts => [...displayedPosts, image]);
+                        if (image.imageUrl !== "LOADING_IMAGE_URL") {
+                            setDisplayedPosts(displayedPosts => [...displayedPosts, image]);
+                        }
                     });
                 });
             }
