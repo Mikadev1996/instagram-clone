@@ -11,9 +11,8 @@ import {collection, getDocs, getFirestore, limit, onSnapshot, orderBy, query} fr
 const MainPostsDisplay = () => {
     const [username, setUsername] = useState("");
     const [userProfilePic, setUserProfilePic] = useState(null);
-    const [images, setImages] = useState([]);
-    const [queryImages, setQueryImages] = useState([]);
-    const [newPostCount, setNewPostCount] = useState(0);
+    const [displayedPosts, setDisplayedPosts] = useState([]);
+    const [counter, setCounter] = useState(0);
 
     const auth = getAuth()
     auth.onAuthStateChanged((user) => {
@@ -29,31 +28,34 @@ const MainPostsDisplay = () => {
 
     useEffect(() => {
         async function loadImages() {
-            const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp'), limit(3));
-            const querySnapshot = await getDocs(recentImagesQuery);
-            querySnapshot.forEach((doc) => {
-                setQueryImages( queryImages => [...queryImages, doc.data()]);
-            })
+            setCounter(counter + 1);
+            if (counter < 100) {
+                console.log("test");
+                const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp'), limit(3));
+                const querySnapshot = await getDocs(recentImagesQuery);
+                // querySnapshot.forEach((doc) => {
+                //     console.log("query")
+                //     setDisplayedPosts( displayedPosts => [...displayedPosts, doc.data()]);
+                // })
 
-            onSnapshot(recentImagesQuery, (snapshot) => {
-                snapshot.docChanges().forEach((change) => {
-                    setNewPostCount(newPostCount => newPostCount + 1);
-                    let image = change.doc.data();
-                    setQueryImages(queryImages => [...queryImages, image]);
+                onSnapshot(recentImagesQuery, (snapshot) => {
+                    console.log("onSnapshot");
+                    snapshot.docChanges().forEach((change) => {
+                        let image = change.doc.data();
+                        console.log(image);
+                        setDisplayedPosts(displayedPosts => [...displayedPosts, image]);
+                    });
                 });
-            });
-            setImages(queryImages);
+            }
         }
-        loadImages().then(r => {
-            console.log(images);
-        });
-    }, [queryImages]);
+        loadImages()
+    }, []);
 
     return (
         <div className="content">
             <div id="container">
                 <NewPost profilePic={userProfilePic} postUrl={examplePost} username={username}/>
-                {(images.length > 0) && images.map((data) => {
+                {(displayedPosts.length > 0) && displayedPosts.map((data) => {
                     return (
                         <NewPost postUrl={data.imageUrl} profilePic={data.profilePicUrl} username={username} />
                     )

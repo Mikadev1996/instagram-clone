@@ -114,6 +114,9 @@ const NavBar = () => {
         const image = document.getElementById("user-upload-image").files[0];
         const caption = document.getElementById("image-caption").value;
         saveImagePost(image, caption)
+            .then((r) => {
+                setOpenNewPost(false);
+            })
     }
 
     return (
