@@ -1,7 +1,13 @@
 import React from "react";
 import NewPostStyle from './styles/NewPost.sass';
+import moment from "moment";
 
-const NewPost = ({postUrl, profilePic, username}) => {
+const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes}) => {
+    let date;
+    if (timestamp) {
+        let d = new Date(timestamp * 1000);
+        date = moment(d).format('MMMM Do YYYY, h:mm a');
+    }
     return (
         <div className="post">
             <div className="post-nav">
@@ -16,9 +22,9 @@ const NewPost = ({postUrl, profilePic, username}) => {
                 <img src={postUrl} alt="post" className="post-image"/>
             </div>
             <div className="post-info">
-                <p>Likes</p>
-                <p>{username}: Caption</p>
-                <p>Date Posted</p>
+                <p className="post-likes">Liked by <strong>{likes}</strong> users</p>
+                <p><strong>{username}</strong> {caption}</p>
+                <p className="post-date">{date}</p>
             </div>
         </div>
     )

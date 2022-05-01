@@ -50,6 +50,7 @@ async function saveImagePost(file, caption) {
         const imageRef = await addDoc(collection(getFirestore(), 'posts'), {
             name: getUserName(),
             imageUrl: "LOADING_IMAGE_URL",
+            likes: 0,
             caption: caption,
             profilePicUrl: getProfilePicUrl(),
             timestamp: serverTimestamp()
