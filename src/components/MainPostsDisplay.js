@@ -30,15 +30,13 @@ const MainPostsDisplay = () => {
         async function loadImages() {
             setCounter(counter + 1);
             if (counter < 100) {
-                console.log("test");
                 const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp'), limit(12));
-                const querySnapshot = await getDocs(recentImagesQuery);
-                querySnapshot.forEach((doc) => {
-                    console.log(doc.id);
-                })
+                // const querySnapshot = await getDocs(recentImagesQuery);
+                // querySnapshot.forEach((doc) => {
+                //     console.log(doc.id);
+                // })
 
                 onSnapshot(recentImagesQuery, (snapshot) => {
-                    console.log("onSnapshot");
                     snapshot.docChanges().forEach((change) => {
                         let image = {...change.doc.data(), postid: change.doc.id}
                         if (image.imageUrl !== "LOADING_IMAGE_URL") {
@@ -59,9 +57,11 @@ const MainPostsDisplay = () => {
                     return (
                         <NewPost postUrl={data.imageUrl}
                                  profilePic={data.profilePicUrl}
-                                 username={username} caption={data.caption}
+                                 username={data.name} caption={data.caption}
                                  timestamp={data.timestamp.seconds}
                                  likes={data.likes}
+                                 id={data.postid}
+                                 key={data.postid}
                         />
                     )
                 })}

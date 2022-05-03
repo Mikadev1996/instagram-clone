@@ -6,9 +6,10 @@ import {Link} from "react-router-dom";
 import CreateNewPostMenu from "./CreateNewPostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {isUserSignedIn, getProfilePicUrl, getUserName, saveImagePost} from "../index";
+import {isUserSignedIn, getProfilePicUrl, getUserName, saveImagePost, addProfileToDatabase} from "../index";
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
 import handleFormError from "./formErrors";
+import {addDoc, collection, getFirestore, serverTimestamp} from "firebase/firestore";
 
 const NavBar = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
@@ -61,14 +62,17 @@ const NavBar = () => {
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
             .then(() => {
-                setSignedIn(true);
-                setOpenSignUp(false);
-            })
-            .then((r) => {
-                updateProfile(auth.currentUser, {
+                Promise.all([
+                    updateProfile(auth.currentUser, {
                     displayName: username,
                     photoURL: "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9a4b3.appspot.com/o/default_photo.png?alt=media&token=97360e51-f17e-4989-9ced-a0bd4f066e2b"
-                })
+                }),
+                    addProfileToDatabase()
+                ])
+                    .then(() => {
+                        setSignedIn(true);
+                        setOpenSignUp(false);
+                    })
             })
             .catch((error) => {
                 const errorCode = error.code;

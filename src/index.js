@@ -6,6 +6,7 @@ import {initializeApp} from "firebase/app";
 import {
     getFirestore,
     addDoc,
+    setDoc,
     collection,
     serverTimestamp,
     updateDoc,
@@ -13,11 +14,12 @@ import {
     orderBy,
     limit,
     onSnapshot,
-    getDocs
+    getDocs,
+    doc,
+    arrayUnion,
 } from "firebase/firestore";
 import {getAuth} from 'firebase/auth';
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
-import NewPost from "./components/NewPost";
 
 const firebaseAppConfig = getFirebaseConfig();
 const app = initializeApp(firebaseAppConfig);
@@ -38,6 +40,28 @@ function getUserName() {
 
 function getProfilePicUrl() {
     return getAuth().currentUser.photoURL;
+}
+
+async function likeImagePost(postid) {
+    const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
+    await updateDoc(userRef, {
+        likedPosts: arrayUnion("test")
+    })
+    // if (userRef.likedPosts.includes(postid)) {
+    //     await updateDoc(userRef, {
+    //         likedPosts: arrayUnion(postid)
+    //     })
+    // } else {
+    //     console.log("already liked");
+    // }
+}
+
+async function addProfileToDatabase() {
+    await setDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
+        username: getUserName(),
+        userid: getAuth().currentUser.uid,
+        likedPosts: [],
+    })
 }
 
 async function saveImagePost(file, caption) {
@@ -76,4 +100,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost};
