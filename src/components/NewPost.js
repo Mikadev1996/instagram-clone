@@ -1,6 +1,8 @@
 import React from "react";
 import NewPostStyle from './styles/NewPost.sass';
 import moment from "moment";
+import whiteLikeIcon from './styles/white-like-icon.png';
+import redLikeIcon from './styles/red-like-icon.png';
 
 const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes}) => {
     let date;
@@ -8,6 +10,9 @@ const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes}) => 
         let d = new Date(timestamp * 1000);
         date = moment(d).format('MMMM Do YYYY, h:mm a');
     }
+    const test = false;
+    const likeIcon = test ? redLikeIcon : whiteLikeIcon;
+
     return (
         <div className="post">
             <div className="post-nav">
@@ -22,6 +27,7 @@ const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes}) => 
                 <img src={postUrl} alt="post" className="post-image"/>
             </div>
             <div className="post-info">
+                <img src={likeIcon} alt="like" className="like-icon"/>
                 <p className="post-likes">Liked by <strong>{likes}</strong> users</p>
                 <p><strong>{username}</strong> {caption}</p>
                 <p className="post-date">{date}</p>
