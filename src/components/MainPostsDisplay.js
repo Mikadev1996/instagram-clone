@@ -42,6 +42,7 @@ const MainPostsDisplay = () => {
                         if (image.imageUrl !== "LOADING_IMAGE_URL") {
                             setDisplayedPosts(displayedPosts => [...displayedPosts, image]);
                         }
+
                     });
                 });
             }
@@ -61,14 +62,13 @@ const MainPostsDisplay = () => {
                                  timestamp={data.timestamp.seconds}
                                  likes={data.likes}
                                  id={data.postid}
-                                 key={data.postid}
                         />
                     )
                 })}
             </div>
             <div id="main-profile-display">
                 {userProfilePic !== null && <img src={userProfilePic}  alt="profile pic" id="main-display-user-image"/>}
-                <p>{username}</p>
+                <p onClick={() => console.log(displayedPosts)}>{username}</p>
             </div>
         </div>
     )

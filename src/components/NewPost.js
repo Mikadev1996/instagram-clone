@@ -8,6 +8,7 @@ import {addProfileToDatabase, getProfilePicUrl, likeImagePost} from "../index";
 
 const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes, id}) => {
     const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(likes);
     let date;
     if (timestamp) {
         let d = new Date(timestamp * 1000);
@@ -39,9 +40,10 @@ const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes, id})
             <div className="post-info">
                 <img src={likeIcon} alt="like" className="like-icon" onClick={() => {
                     setIsLiked(!isLiked);
+                    isLiked ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
                     likeImagePost(id);
                 }}/>
-                <p className="post-likes">Liked by <strong>{likes}</strong> users</p>
+                <p className="post-likes">Liked by <strong>{likeCount}</strong> users</p>
                 <p><strong>{username}</strong> {caption}</p>
                 <p className="post-date">{date}</p>
             </div>

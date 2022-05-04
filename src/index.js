@@ -48,23 +48,23 @@ async function likeImagePost(postid) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
     const postRef = doc(getFirestore(), "posts", postid);
 
-    if (userRef.likedPosts.includes(postid)) {
-        await updateDoc(userRef, {
-            likedPosts: arrayUnion(postid)
-        })
-        await updateDoc(postRef, {
-            likes: increment(1)
-        })
-    }
-
-    else {
-        await updateDoc(userRef, {
-            likedPosts: arrayRemove(postid)
-        })
-        await updateDoc(postRef, {
-            likes: increment(-1)
-        })
-    }
+    // if (userRef.likedPosts.includes(postid)) {
+    //     await updateDoc(userRef, {
+    //         likedPosts: arrayUnion(postid)
+    //     })
+    //     await updateDoc(postRef, {
+    //         likes: increment(1)
+    //     })
+    // }
+    //
+    // else {
+    //     await updateDoc(userRef, {
+    //         likedPosts: arrayRemove(postid)
+    //     })
+    //     await updateDoc(postRef, {
+    //         likes: increment(-1)
+    //     })
+    // }
 }
 
 async function addProfileToDatabase() {
