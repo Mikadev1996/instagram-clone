@@ -17,6 +17,8 @@ import {
     getDocs,
     doc,
     arrayUnion,
+    arrayRemove,
+    increment,
 } from "firebase/firestore";
 import {getAuth} from 'firebase/auth';
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
@@ -44,16 +46,25 @@ function getProfilePicUrl() {
 
 async function likeImagePost(postid) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
-    await updateDoc(userRef, {
-        likedPosts: arrayUnion("test")
-    })
-    // if (userRef.likedPosts.includes(postid)) {
-    //     await updateDoc(userRef, {
-    //         likedPosts: arrayUnion(postid)
-    //     })
-    // } else {
-    //     console.log("already liked");
-    // }
+    const postRef = doc(getFirestore(), "posts", postid);
+
+    if (userRef.likedPosts.includes(postid)) {
+        await updateDoc(userRef, {
+            likedPosts: arrayUnion(postid)
+        })
+        await updateDoc(postRef, {
+            likes: increment(1)
+        })
+    }
+
+    else {
+        await updateDoc(userRef, {
+            likedPosts: arrayRemove(postid)
+        })
+        await updateDoc(postRef, {
+            likes: increment(-1)
+        })
+    }
 }
 
 async function addProfileToDatabase() {

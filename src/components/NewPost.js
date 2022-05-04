@@ -6,7 +6,7 @@ import redLikeIcon from './styles/red-like-icon.png';
 import {getAuth} from "firebase/auth";
 import {addProfileToDatabase, getProfilePicUrl, likeImagePost} from "../index";
 
-const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes}) => {
+const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes, id}) => {
     const [isLiked, setIsLiked] = useState(false);
     let date;
     if (timestamp) {
@@ -38,8 +38,8 @@ const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes}) => 
             </div>
             <div className="post-info">
                 <img src={likeIcon} alt="like" className="like-icon" onClick={() => {
-                    setIsLiked(!isLiked)
-                    likeImagePost()
+                    setIsLiked(!isLiked);
+                    likeImagePost(id);
                 }}/>
                 <p className="post-likes">Liked by <strong>{likes}</strong> users</p>
                 <p><strong>{username}</strong> {caption}</p>
