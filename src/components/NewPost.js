@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import NewPostStyle from './styles/NewPost.sass';
 import moment from "moment";
 import whiteLikeIcon from './styles/white-like-icon.png';
 import redLikeIcon from './styles/red-like-icon.png';
 import {getAuth} from "firebase/auth";
-import {addProfileToDatabase, getProfilePicUrl, likeImagePost} from "../index";
+import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, likeImagePost} from "../index";
+import {doc, getDoc, getFirestore} from "firebase/firestore";
 
 const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes, id}) => {
     const [isLiked, setIsLiked] = useState(false);
@@ -15,12 +16,15 @@ const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes, id})
         date = moment(d).format('MMMM Do YYYY, h:mm a');
     }
 
-    const auth = getAuth()
-    auth.onAuthStateChanged((user) => {
-        if (user) {
+    useEffect(() => {
+        checkIfImageLiked(id)
+            .then(r => {
+                if (r) {
+                    setIsLiked(true);
+                }
+            });
+    }, []);
 
-        }
-    })
 
     const likeIcon = isLiked ? redLikeIcon : whiteLikeIcon;
 

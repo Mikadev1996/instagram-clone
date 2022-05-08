@@ -45,15 +45,20 @@ function getProfilePicUrl() {
     return getAuth().currentUser.photoURL;
 }
 
+async function checkIfImageLiked(postId) {
+    const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+    return (userData.likedPosts.includes(postId));
+}
+
 async function likeImagePost(postId) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
     const postRef = doc(getFirestore(), "posts", postId);
     const userSnap = await getDoc(userRef);
     const postSnap = await getDoc(postRef);
     const userData = userSnap.data();
-    const postData = postSnap.data();
 
-    console.log(userData)
 
     if (!userData.likedPosts.includes(postId)) {
         await updateDoc(userRef, {
@@ -117,4 +122,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked};
