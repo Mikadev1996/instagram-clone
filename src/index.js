@@ -48,27 +48,29 @@ function getProfilePicUrl() {
 async function likeImagePost(postId) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
     const postRef = doc(getFirestore(), "posts", postId);
-    const userSnap = getDoc(userRef);
-    console.log((await userSnap).data());
-    // console.log('-------------------------------------')
-    // console.log(postRef);
-    // if (userRef.likedPosts.includes(postId)) {
-    //     await updateDoc(userRef, {
-    //         likedPosts: arrayUnion(postId)
-    //     })
-    //     await updateDoc(postRef, {
-    //         likes: increment(1)
-    //     })
-    // }
-    // //
-    // else {
-    //     await updateDoc(userRef, {
-    //         likedPosts: arrayRemove(postId)
-    //     })
-    //     await updateDoc(postRef, {
-    //         likes: increment(-1)
-    //     })
-    // }
+    const userSnap = await getDoc(userRef);
+    const postSnap = await getDoc(postRef);
+    const userData = userSnap.data();
+    const postData = postSnap.data();
+
+    console.log(userData)
+
+    if (!userData.likedPosts.includes(postId)) {
+        await updateDoc(userRef, {
+            likedPosts: arrayUnion(postId)
+        })
+        await updateDoc(postRef, {
+            likes: increment(1)
+        })
+    }
+    else {
+        await updateDoc(userRef, {
+            likedPosts: arrayRemove(postId)
+        })
+        await updateDoc(postRef, {
+            likes: increment(-1)
+        })
+    }
 }
 
 async function addProfileToDatabase() {
