@@ -31,24 +31,24 @@ const MainPostsDisplay = () => {
             setCounter(counter + 1);
             if (counter < 100) {
                 const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp', 'desc'), limit(3));
-                const querySnapshot = await getDocs(recentImagesQuery);
-                querySnapshot.forEach((doc) => {
-                    let post = {...doc.data(), postid: doc.id};
-                    console.log(post);
-                    if (post.imageUrl !== "LOADING_IMAGE_URL") {
-                        setDisplayedPosts(displayedPosts => [...displayedPosts, post]);
-                    }
-                })
+                // const querySnapshot = await getDocs(recentImagesQuery);
+                // querySnapshot.forEach((doc) => {
+                //     let post = {...doc.data(), postid: doc.id};
+                //     console.log(post);
+                //     if (post.imageUrl !== "LOADING_IMAGE_URL") {
+                //         setDisplayedPosts(displayedPosts => [...displayedPosts, post]);
+                //     }
+
                 // // TODO : SORT THIS SHIT OUT
-                // onSnapshot(recentImagesQuery, (snapshot) => {
-                //     snapshot.docChanges().forEach((change) => {
-                //         let image = {...change.doc.data(), postid: change.doc.id}
-                //         if (image.imageUrl !== "LOADING_IMAGE_URL") {
-                //             setDisplayedPosts(displayedPosts => [...displayedPosts, image]);
-                //         }
-                //
-                //     });
-                // });
+                onSnapshot(recentImagesQuery, (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        let image = {...change.doc.data(), postid: change.doc.id}
+                        if (image.imageUrl !== "LOADING_IMAGE_URL") {
+                            setDisplayedPosts(displayedPosts => [...displayedPosts, image]);
+                        }
+
+                    });
+                });
             }
         }
         loadImages()
