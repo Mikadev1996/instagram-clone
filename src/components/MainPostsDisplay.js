@@ -26,6 +26,8 @@ const MainPostsDisplay = () => {
         }
     })
 
+
+    // Load Images on page load
     useEffect(() => {
         async function loadImages() {
             setCounter(counter + 1);
@@ -34,7 +36,6 @@ const MainPostsDisplay = () => {
                 const querySnapshot = await getDocs(recentImagesQuery);
                 querySnapshot.forEach((doc) => {
                     let post = {...doc.data(), postId: doc.id};
-                    console.log(post);
                     if (post.imageUrl !== "LOADING_IMAGE_URL") {
                         setDisplayedPosts(displayedPosts => [...displayedPosts, post]);
                     }
@@ -44,6 +45,21 @@ const MainPostsDisplay = () => {
         }
         loadImages()
     }, []);
+
+    // Load Images on end of scroll
+    useEffect(() => {
+        const container = document.getElementById("container");
+        window.onscroll = () => {
+            console.log("container scrollHeight: ", container.scrollHeight);
+            console.log("body scrollHeight: ", document.body.scrollHeight);
+            console.log(`scrollY: `, window.scrollY);
+            // if ((window.innerHeight + window.scrollY) >= window.offsetHeight) {
+            //     console.log("bottom of page")
+            // }
+        }
+
+    }, []);
+
 
     return (
         <div className="content">
@@ -64,7 +80,7 @@ const MainPostsDisplay = () => {
             </div>
             <div id="main-profile-display">
                 {userProfilePic !== null && <img src={userProfilePic}  alt="profile pic" id="main-display-user-image"/>}
-                <p onClick={() => console.log(displayedPosts)}>{username}</p>
+                <p>{username}</p>
             </div>
         </div>
     )

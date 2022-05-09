@@ -28,6 +28,7 @@ const firebaseAppConfig = getFirebaseConfig();
 const app = initializeApp(firebaseAppConfig);
 const db = getFirestore(app);
 
+
 async function getDefaultImage() {
     const defaultImageRef = ref(getStorage(), "gs://instagram-clone-9a4b3.appspot.com/default_photo.png");
     return await getDownloadURL(defaultImageRef);
