@@ -78,7 +78,7 @@ const MainPostsDisplay = () => {
 
         const nextSnap = await getDocs(next);
         nextSnap.forEach((doc) => {
-            console.log(doc.data().caption);
+            setDisplayedPosts(displayedPosts => [...displayedPosts, doc.data()])
         })
     }
 
