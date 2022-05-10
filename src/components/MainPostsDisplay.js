@@ -4,7 +4,18 @@ import MainPostStyle from './styles/MainPostsDisplay.sass'
 import {getProfilePicUrl} from "../index";
 import {getAuth} from "firebase/auth";
 import examplePost from './styles/ExamplePost.png';
-import {collection, getDocs, getFirestore, limit, onSnapshot, orderBy, query} from "firebase/firestore";
+import {
+    collection, doc,
+    getDoc,
+    getDocs,
+    getFirestore,
+    limit,
+    onSnapshot,
+    orderBy,
+    query,
+    startAfter,
+    startAt
+} from "firebase/firestore";
 
 //TODO: MAP POSTS FROM DATABASE TO NEWPOST COMPONENT
 
@@ -40,22 +51,36 @@ const MainPostsDisplay = () => {
                         setDisplayedPosts(displayedPosts => [...displayedPosts, post]);
                     }
                 })
-
             }
         }
         loadImages()
     }, []);
 
     // Load Images on end of scroll
-    useEffect(() => {
-        const container = document.getElementById("container");
-        window.onscroll = () => {
-            if (window.scrollY + window.innerHeight === document .body.scrollHeight) {
-                console.log("user reached end of page ------------");
-            }
+    const initialScrollHeight = document.body.scrollHeight
+    window.onscroll = () => {
+        if (window.scrollY + window.innerHeight === document.body.scrollHeight && (document.body.scrollHeight > initialScrollHeight)) {
+            loadImagesOnScroll()
         }
+    }
 
-    }, []);
+    async function loadImagesOnScroll() {
+        console.log("end of page")
+
+        const lastVisible2 = displayedPosts[displayedPosts.length - 1].postId;
+        const lastVisibleRef = doc(getFirestore(), "posts", lastVisible2);
+        const lastSnap = await getDoc(lastVisibleRef);
+        console.log("last snap - ", lastSnap.data().caption)
+        const next = query(collection(getFirestore(), "posts"),
+            orderBy("timestamp", "desc"),
+            startAfter(lastSnap.data().timestamp),
+            limit(3));
+
+        const nextSnap = await getDocs(next);
+        nextSnap.forEach((doc) => {
+            console.log(doc.data().caption);
+        })
+    }
 
 
     return (
