@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import SignUpStyle from './styles/SignUp.sass'
+import SignUpStyle from '../styles/SignUp.scss'
 
 const SignUp = ({handleCancel, handleSignUpForm}) => {
     return (

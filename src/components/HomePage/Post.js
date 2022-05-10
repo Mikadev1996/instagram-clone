@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import NewPostStyle from './styles/NewPost.sass';
+import NewPostStyle from '../styles/NewPost.scss';
 import moment from "moment";
-import whiteLikeIcon from './styles/white-like-icon.png';
-import redLikeIcon from './styles/red-like-icon.png';
+import whiteLikeIcon from '../images/white-like-icon.png';
+import redLikeIcon from '../images/red-like-icon.png';
 import {getAuth} from "firebase/auth";
-import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, likeImagePost} from "../index";
+import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, likeImagePost} from "../../index";
 import {doc, getDoc, getFirestore} from "firebase/firestore";
 
-const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes, id}) => {
+const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id}) => {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(likes);
     let date;
@@ -55,4 +55,4 @@ const NewPost = ({postUrl, profilePic, username, caption, timestamp, likes, id})
     )
 }
 
-export default NewPost;
+export default Post;

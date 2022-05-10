@@ -57,10 +57,7 @@ async function likeImagePost(postId) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
     const postRef = doc(getFirestore(), "posts", postId);
     const userSnap = await getDoc(userRef);
-    const postSnap = await getDoc(postRef);
     const userData = userSnap.data();
-
-
     if (!userData.likedPosts.includes(postId)) {
         await updateDoc(userRef, {
             likedPosts: arrayUnion(postId)

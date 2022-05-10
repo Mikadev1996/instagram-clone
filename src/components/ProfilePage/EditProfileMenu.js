@@ -1,5 +1,5 @@
 import React from "react";
-import EditProfileStyles from './styles/EditProfileMenu.scss.css';
+import EditProfileStyles from '../styles/EditProfileMenu.scss';
 
 const EditProfileMenu = ({handleEditProfile, updateProfile}) => {
     return (

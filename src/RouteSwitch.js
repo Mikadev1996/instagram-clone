@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from "./components/HomePage";
-import ProfilePage from "./components/ProfilePage";
+import HomePage from "./components/HomePage/HomePage";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 
 const RouteSwitch = () => {
     return (

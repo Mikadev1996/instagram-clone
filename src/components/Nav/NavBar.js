@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import logo from './styles/logo-white.png';
-import navbarStyles from './styles/NavBar.sass';
-import loader from './styles/loader.css';
+import logo from '../images/logo.png';
+import navbarStyles from '../styles/NavBar.scss';
+import loader from '../styles/loader.scss';
 import {Link} from "react-router-dom";
-import CreateNewPostMenu from "./CreateNewPostMenu";
+import CreatePostMenu from "./CreatePostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {isUserSignedIn, getProfilePicUrl, getUserName, saveImagePost, addProfileToDatabase} from "../index";
+import {isUserSignedIn, getProfilePicUrl, getUserName, saveImagePost, addProfileToDatabase} from "../../index";
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
 import handleFormError from "./formErrors";
 import {addDoc, collection, getFirestore, serverTimestamp} from "firebase/firestore";
@@ -146,7 +146,7 @@ const NavBar = () => {
             </nav>
             {openSignUp && <SignUp handleCancel={handleCancel} handleSignUpForm={handleSignUpForm} /> }
             {openSignIn && <SignIn handleCancel={handleCancel} handleSignInForm={handleSignInForm}/>}
-            {openNewPost && <CreateNewPostMenu handleCreateNewPostMenu={handleCreateNewPostMenu} handleCreateNewPost={handleCreateNewPost}/>}
+            {openNewPost && <CreatePostMenu handleCreateNewPostMenu={handleCreateNewPostMenu} handleCreateNewPost={handleCreateNewPost}/>}
         </div>
 
     )

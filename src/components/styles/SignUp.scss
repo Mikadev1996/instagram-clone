@@ -1,0 +1,99 @@
+
+button {
+  margin: 0;
+  padding: 0;
+}
+textarea {
+  border: 2px solid whitesmoke;
+  border-radius: 4px;
+  display: block;
+  font-family: inherit;
+  width: 50%;
+  resize: none;
+  padding: 10px;
+  font-size: 14px;
+}
+textarea:focus {
+  outline: none;
+}
+.form {
+  padding: 30px 40px;
+}
+.form-control input {
+  border: 1px solid whitesmoke;
+  border-radius: 4px;
+  display: block;
+  font-family: inherit;
+  width: 94%;
+  font-size: 14px;
+  padding: 10px;
+}
+input:focus {
+  outline: none;
+}
+
+.signup-container {
+  z-index: 1;
+  padding: 30px 40px;
+  border-radius: 5px;
+  background: #202124;
+  width: 400px;
+  height: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0 , 0.3);
+}
+.form {
+  width: 100%;
+}
+.form-control {
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  position: relative;
+}
+.form-control label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.header {
+  padding: 20px 40px;
+  border-bottom: 1px solid darkgrey;
+}
+.form-control small {
+  visibility: visible;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.form-control.error small {
+  color: darkred;
+  visibility: visible;
+}
+.form-confirm {
+  background: #3498db;
+}
+.form button {
+  margin: 0;
+  padding: 10px;
+  width: 100%;
+  display: block;
+  border-radius: 4px;
+}
+.form button:hover {
+  text-decoration: underline;
+  font-weight: bold;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+}
+
+.form-control.error input {
+  border-color: darkred;
+}
+.form-control.success input {
+  border-color: forestgreen;
+}
+
+.form-cancel {
+  background-color: #9a9a9a;
+  border-color: #9a9a9a;
+}

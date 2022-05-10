@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import CreateNewPostStyle from './styles/CreateNewPostMenu.sass';
+import CreateNewPostStyle from '../styles/CreateNewPostMenu.scss';
 
-const CreateNewPostMenu = ({handleCreateNewPostMenu, handleCreateNewPost}) => {
+const CreatePostMenu = ({handleCreateNewPostMenu, handleCreateNewPost}) => {
     const [isLoading, setIsLoading] = useState(false);
 
     return (
@@ -26,4 +26,4 @@ const CreateNewPostMenu = ({handleCreateNewPostMenu, handleCreateNewPost}) => {
     )
 }
 
-export default CreateNewPostMenu;
+export default CreatePostMenu;

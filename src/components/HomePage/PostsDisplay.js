@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import NewPost from "./NewPost";
-import MainPostStyle from './styles/MainPostsDisplay.sass'
-import {getProfilePicUrl} from "../index";
+import Post from "./Post";
+import MainPostStyle from '../styles/MainPostsDisplay.sass'
+import {getProfilePicUrl} from "../../index";
 import {getAuth} from "firebase/auth";
 import {
     collection, doc,
@@ -17,7 +17,7 @@ import {
 
 //TODO: MAP POSTS FROM DATABASE TO NEWPOST COMPONENT
 
-const MainPostsDisplay = () => {
+const PostsDisplay = () => {
     const [username, setUsername] = useState("");
     const [userProfilePic, setUserProfilePic] = useState(null);
     const [displayedPosts, setDisplayedPosts] = useState([]);
@@ -57,8 +57,9 @@ const MainPostsDisplay = () => {
 
     // Load Images on end of scroll
     const initialScrollHeight = document.body.scrollHeight
+    //&& (document.body.scrollHeight > initialScrollHeight)
     window.onscroll = () => {
-        if (window.scrollY + window.innerHeight === document.body.scrollHeight && (document.body.scrollHeight > initialScrollHeight)) {
+        if (window.scrollY + window.innerHeight === document.body.scrollHeight ) {
             loadImagesOnScroll()
         }
     }
@@ -91,13 +92,13 @@ const MainPostsDisplay = () => {
             <div id="container">
                 {(displayedPosts.length > 0) && displayedPosts.map((data) => {
                     return (
-                        <NewPost postUrl={data.imageUrl}
-                                 profilePic={data.profilePicUrl}
-                                 username={data.name} caption={data.caption}
-                                 timestamp={data.timestamp.seconds}
-                                 likes={data.likes}
-                                 id={data.postId}
-                                 key={data.postId}
+                        <Post postUrl={data.imageUrl}
+                              profilePic={data.profilePicUrl}
+                              username={data.name} caption={data.caption}
+                              timestamp={data.timestamp.seconds}
+                              likes={data.likes}
+                              id={data.postId}
+                              key={data.postId}
                         />
                     )
                 })}
@@ -113,4 +114,4 @@ const MainPostsDisplay = () => {
     )
 }
 
-export default MainPostsDisplay;
+export default PostsDisplay;

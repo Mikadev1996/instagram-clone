@@ -1,5 +1,5 @@
 import React from "react";
-import SignInStyles from './styles/SignIn.scss';
+import SignInStyles from '../styles/SignIn.scss';
 
 const SignIn = ({handleCancel, handleSignInForm}) => {
     return (

@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import NavBar from "./NavBar";
-import ProfileStyle from './styles/ProfilePage.sass';
+import NavBar from "../Nav/NavBar";
+import ProfileStyle from '../styles/ProfilePage.sass';
 import PreviewPost from "./PreviewPost";
-import {getProfilePicUrl, getUserName, isUserSignedIn} from "../index";
+import {getProfilePicUrl, getUserName, isUserSignedIn} from "../../index";
 import EditProfileMenu from "./EditProfileMenu";
 import {getAuth} from "firebase/auth";
 import {collection, getDocs, getFirestore, limit, orderBy, query, where} from "firebase/firestore";
-import NewPost from "./NewPost";
+import Post from "../HomePage/Post";
 
 const ProfilePage = () => {
     const [editProfile, setEditProfile] = useState(false);
