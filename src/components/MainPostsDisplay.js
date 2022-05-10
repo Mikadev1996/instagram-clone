@@ -3,18 +3,16 @@ import NewPost from "./NewPost";
 import MainPostStyle from './styles/MainPostsDisplay.sass'
 import {getProfilePicUrl} from "../index";
 import {getAuth} from "firebase/auth";
-import examplePost from './styles/ExamplePost.png';
 import {
     collection, doc,
     getDoc,
     getDocs,
     getFirestore,
     limit,
-    onSnapshot,
     orderBy,
     query,
     startAfter,
-    startAt
+    onSnapshot,
 } from "firebase/firestore";
 
 //TODO: MAP POSTS FROM DATABASE TO NEWPOST COMPONENT
@@ -24,6 +22,7 @@ const MainPostsDisplay = () => {
     const [userProfilePic, setUserProfilePic] = useState(null);
     const [displayedPosts, setDisplayedPosts] = useState([]);
     const [counter, setCounter] = useState(0);
+    const [noMorePosts, setNoMorePosts] = useState(false);
 
     const auth = getAuth()
     auth.onAuthStateChanged((user) => {
@@ -65,28 +64,31 @@ const MainPostsDisplay = () => {
     }
 
     async function loadImagesOnScroll() {
-        console.log("end of page")
-
         const lastVisible2 = displayedPosts[displayedPosts.length - 1].postId;
         const lastVisibleRef = doc(getFirestore(), "posts", lastVisible2);
         const lastSnap = await getDoc(lastVisibleRef);
-        console.log("last snap - ", lastSnap.data().caption)
+
         const next = query(collection(getFirestore(), "posts"),
             orderBy("timestamp", "desc"),
             startAfter(lastSnap.data().timestamp),
             limit(3));
 
         const nextSnap = await getDocs(next);
+        if (nextSnap.empty) {
+            setNoMorePosts(true);
+            return
+        }
         nextSnap.forEach((doc) => {
-            setDisplayedPosts(displayedPosts => [...displayedPosts, doc.data()])
+            let post = {...doc.data(), postId: doc.id};
+            setDisplayedPosts(displayedPosts => [...displayedPosts, post]);
         })
+
     }
 
 
     return (
         <div className="content">
             <div id="container">
-                <NewPost profilePic={userProfilePic} postUrl={examplePost} username={username}/>
                 {(displayedPosts.length > 0) && displayedPosts.map((data) => {
                     return (
                         <NewPost postUrl={data.imageUrl}
@@ -99,6 +101,9 @@ const MainPostsDisplay = () => {
                         />
                     )
                 })}
+                {noMorePosts && <div id="no-more-posts">
+                    No More Posts
+                </div>}
             </div>
             <div id="main-profile-display">
                 {userProfilePic !== null && <img src={userProfilePic}  alt="profile pic" id="main-display-user-image"/>}

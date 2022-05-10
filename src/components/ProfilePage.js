@@ -5,9 +5,12 @@ import PreviewPost from "./PreviewPost";
 import {getProfilePicUrl, getUserName, isUserSignedIn} from "../index";
 import EditProfileMenu from "./EditProfileMenu";
 import {getAuth} from "firebase/auth";
+import {collection, getDocs, getFirestore, limit, orderBy, query, where} from "firebase/firestore";
+import NewPost from "./NewPost";
 
 const ProfilePage = () => {
     const [editProfile, setEditProfile] = useState(false);
+    const [userPosts, setUserPosts] = useState([]);
     const [signedIn, setSignedIn] = useState(null);
     const [username, setUsername] = useState("");
     const [userProfilePic, setUserProfilePic] = useState(null);
@@ -15,14 +18,29 @@ const ProfilePage = () => {
     const auth = getAuth()
     auth.onAuthStateChanged((user) => {
         if (user) {
-            setSignedIn(true);
-            setUsername(getUserName());
+            setUsername(user.displayName);
             setUserProfilePic(getProfilePicUrl());
         }
         else {
-            setSignedIn(false);
+            setUsername("");
+            setUserProfilePic(null);
         }
     })
+
+    useEffect(() => {
+        async function loadUserImages() {
+            const recentImagesQuery = query(collection(getFirestore(), 'posts'), where("name", "==", username));
+            const querySnapshot = await getDocs(recentImagesQuery);
+            querySnapshot.forEach((doc) => {
+                let post = {...doc.data(), postId: doc.id};
+                if (post.imageUrl !== "LOADING_IMAGE_URL") {
+                    console.log(post);
+                    setUserPosts(userPosts => [...userPosts, post]);
+                }
+            })
+        }
+        loadUserImages()
+    }, [username]);
 
     const handleEditProfile = () => {
         setEditProfile(editProfile => !editProfile);
@@ -48,8 +66,7 @@ const ProfilePage = () => {
                             </div>
                             <ul className="profile-info-detail">
                                 <li>No. Posts</li>
-                                <li>No. Followers</li>
-                                <li>No. Following</li>
+
                             </ul>
                             <div className="profile-info-detail">
                                 User Biography
@@ -60,12 +77,11 @@ const ProfilePage = () => {
                     <div className="profile-user-posts">
                         <h1 className="posts-title">POSTS</h1>
                         <div className="grid-container">
-                            <PreviewPost />
-                            <PreviewPost />
-                            <PreviewPost />
-                            <PreviewPost />
-                            <PreviewPost />
-                            <PreviewPost />
+                            {(userPosts.length > 0) && userPosts.map((data) => {
+                                return (
+                                    <PreviewPost imageUrl={data.imageUrl}/>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>

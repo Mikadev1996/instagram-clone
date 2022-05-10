@@ -1,10 +1,10 @@
 import React from "react";
 
-const PreviewPost = () => {
+const PreviewPost = ({imageUrl}) => {
 
     return (
         <div className="grid-item">
-            Temp Post Img
+            <img src={imageUrl} alt="post"/>
         </div>
     )
 }
