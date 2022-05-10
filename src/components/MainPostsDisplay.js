@@ -50,12 +50,9 @@ const MainPostsDisplay = () => {
     useEffect(() => {
         const container = document.getElementById("container");
         window.onscroll = () => {
-            console.log("container scrollHeight: ", container.scrollHeight);
-            console.log("body scrollHeight: ", document.body.scrollHeight);
-            console.log(`scrollY: `, window.scrollY);
-            // if ((window.innerHeight + window.scrollY) >= window.offsetHeight) {
-            //     console.log("bottom of page")
-            // }
+            if (window.scrollY + window.innerHeight === document .body.scrollHeight) {
+                console.log("user reached end of page ------------");
+            }
         }
 
     }, []);
