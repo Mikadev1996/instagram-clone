@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Post from "./Post";
-import MainPostStyle from '../styles/MainPostsDisplay.sass'
+import MainPostStyle from '../styles/MainPostsDisplay.scss'
 import {getProfilePicUrl} from "../../index";
 import {getAuth} from "firebase/auth";
 import {
