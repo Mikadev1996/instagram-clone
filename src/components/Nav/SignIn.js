@@ -10,12 +10,16 @@ const SignIn = ({handleCancel, handleSignInForm}) => {
                     <div className="form-control">
                         <label htmlFor="email" >Email</label>
                         <input type="email" placeholder="Email" id="email-login" required/>
+                        <i className="fas fa-check-circle"></i>
+                        <i className="fas fa-exclamation-circle"></i>
                         <small id="email-login-error"></small>
                     </div>
 
                     <div className="form-control">
                         <label htmlFor="password">Password</label>
                         <input type="password" placeholder="Password" id="password-login" maxLength="16" required/>
+                        <i className="fas fa-check-circle"></i>
+                        <i className="fas fa-exclamation-circle"></i>
                         <small id="password-login-error"></small>
                     </div>
                     <hr />

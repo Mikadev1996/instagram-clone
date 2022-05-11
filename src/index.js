@@ -41,6 +41,13 @@ function getProfilePicUrl() {
     return getAuth().currentUser.photoURL;
 }
 
+async function getUserProfilePic(uid) {
+    const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+    return userData.profilePicUrl;
+}
+
 async function checkIfImageLiked(postId) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
     const userSnap = await getDoc(userRef);
@@ -71,12 +78,13 @@ async function likeImagePost(postId) {
     }
 }
 
-async function addProfileToDatabase() {
+async function addProfileToDatabase(displayName) {
     await setDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
         username: getUserName(),
         userid: getAuth().currentUser.uid,
         likedPosts: [],
         bio: "",
+        profilePicUrl: "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9a4b3.appspot.com/o/default_photo.png?alt=media&token=97360e51-f17e-4989-9ced-a0bd4f066e2b",
     })
 }
 

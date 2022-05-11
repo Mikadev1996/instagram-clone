@@ -4,7 +4,7 @@ import ProfileStyle from '../styles/ProfilePage.scss';
 import PreviewPost from "./PreviewPost";
 import {getProfilePicUrl, updateDatabaseUserProfile} from "../../index";
 import {getAuth} from "firebase/auth";
-import {collection, doc, getDoc, getDocs, getFirestore, query, where} from "firebase/firestore";
+import {collection, getDocs, getFirestore, query, where} from "firebase/firestore";
 import ProfileDisplay from "./ProfileDisplay";
 
 const ProfilePage = () => {
@@ -68,7 +68,6 @@ const ProfilePage = () => {
                 userPosts={userPosts}
                 handleEditProfile={handleEditProfile}
                 updateProfile={updateProfile}
-
             />
         </div>
     )

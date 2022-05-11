@@ -10,24 +10,32 @@ const SignUp = ({handleCancel, handleSignUpForm}) => {
                      <div className="form-control">
                          <label htmlFor="username" >Username</label>
                          <input type="text" placeholder="Username" id="username" />
-                         <small>Error Message</small>
+                         <i className="fas fa-check-circle"></i>
+                         <i className="fas fa-exclamation-circle"></i>
+                         <small id="username-signup-error">Error Message</small>
                      </div>
                      <div className="form-control">
                          <label htmlFor="email" >Email</label>
                          <input type="email" placeholder="Email" id="email" />
-                         <small>Error Message</small>
+                         <i className="fas fa-check-circle"></i>
+                         <i className="fas fa-exclamation-circle"></i>
+                         <small id="email-signup-error">Error Message</small>
                      </div>
 
                      <div className="form-control">
                          <label htmlFor="password">Password</label>
                          <input type="password" placeholder="Password" id="password" maxLength="16" />
-                         <small>Error Message</small>
+                         <i className="fas fa-check-circle"></i>
+                         <i className="fas fa-exclamation-circle"></i>
+                         <small id="password-signup-error">Error Message</small>
                      </div>
 
                      <div className="form-control">
                          <label htmlFor="password-check">Password Check</label>
                          <input type="password" placeholder="Password Check" id="password-check" maxLength="16" />
-                         <small>Error Message</small>
+                         <i className="fas fa-check-circle"></i>
+                         <i className="fas fa-exclamation-circle"></i>
+                         <small id="passwordCheck-signup-error">Error Message</small>
                      </div>
                      <div className="form-control ">
                          <button className="form-confirm" onClick={e => handleSignUpForm(e)}>Confirm</button>

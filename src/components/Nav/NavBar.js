@@ -3,7 +3,7 @@ import logo from '../../images/logo-white.png';
 import navbarStyles from '../styles/NavBar.scss';
 import loader from '../styles/loader.scss';
 import {Link} from "react-router-dom";
-import CreatePostMenu from "./CreatePostMenu";
+import CreatePostMenu from "../HomePage/CreatePostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 

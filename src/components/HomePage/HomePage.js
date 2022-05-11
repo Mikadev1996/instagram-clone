@@ -1,9 +1,9 @@
 import React, {useContext, useState} from "react";
 import NavBar from "../Nav/NavBar";
 import HomePageStyle from '../styles/HomePage.scss';
-import CreateNewPost from "../Nav/CreatePostMenu";
+import CreateNewPost from "./CreatePostMenu";
 import PostsDisplay from "./PostsDisplay";
-import CreatePostMenu from "../Nav/CreatePostMenu";
+import CreatePostMenu from "./CreatePostMenu";
 import {
     createUserWithEmailAndPassword,
     getAuth,
@@ -12,7 +12,7 @@ import {
     updateProfile
 } from "firebase/auth";
 import {addProfileToDatabase, getProfilePicUrl, getUserName, isUserSignedIn, saveImagePost} from "../../index";
-import handleFormError from "../Nav/formErrors";
+import {handleSignInError, handleSignUpError} from "../Nav/formErrors";
 
 const HomePage = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
@@ -57,9 +57,18 @@ const HomePage = () => {
 
     function handleSignUpForm(e) {
         e.preventDefault();
+        const username = document.getElementById("username").value;
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        const username = document.getElementById("username").value;
+        const passwordCheck = document.getElementById("password-check").value;
+        if (password !== passwordCheck) {
+            handleSignUpError("passwords do not match");
+            return;
+        } else if (username === "mikadev1996") {
+            handleSignUpError("username already exists");
+            return;
+        }
+
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
             .then(() => {
@@ -68,7 +77,7 @@ const HomePage = () => {
                         displayName: username,
                         photoURL: "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9a4b3.appspot.com/o/default_photo.png?alt=media&token=97360e51-f17e-4989-9ced-a0bd4f066e2b",
                     }),
-                    addProfileToDatabase()
+                    addProfileToDatabase(username)
                 ])
                     .then(() => {
                         setSignedIn(true);
@@ -84,17 +93,13 @@ const HomePage = () => {
         const password = document.getElementById("password-login").value;
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user)
-            })
             .then(() => {
                 setSignedIn(true);
                 setOpenSignIn(false);
             })
             .catch((error) => {
-                console.log(error.code);
-                handleFormError(error.code);
+                console.log(error)
+                handleSignInError(error.code);
             })
     }
 
@@ -121,6 +126,7 @@ const HomePage = () => {
 
     return (
         <div className="app">
+
             <NavBar
                 handleCreateNewPost={handleCreateNewPost}
                 handleCancel={handleCancel}

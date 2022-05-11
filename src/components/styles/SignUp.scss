@@ -97,3 +97,20 @@ input:focus {
   background-color: #9a9a9a;
   border-color: #9a9a9a;
 }
+
+.form-control.success i.fa-check-circle {
+  color: forestgreen;
+  visibility: visible;
+}
+
+.form-control.error i.fa-exclamation-circle {
+  color: darkred;
+  visibility: visible;
+}
+
+.form-control i {
+  visibility: hidden;
+  position: absolute;
+  top: 36px;
+  right: 10px;
+}
