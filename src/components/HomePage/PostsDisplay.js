@@ -36,7 +36,6 @@ const PostsDisplay = () => {
         }
     })
 
-
     // Load Images on page load
     useEffect(() => {
         async function loadImages() {
@@ -59,7 +58,7 @@ const PostsDisplay = () => {
     const initialScrollHeight = document.body.scrollHeight
     //&& (document.body.scrollHeight > initialScrollHeight)
     window.onscroll = () => {
-        if (window.scrollY + window.innerHeight === document.body.scrollHeight ) {
+        if (window.scrollY + window.innerHeight === document.body.scrollHeight) {
             loadImagesOnScroll()
         }
     }

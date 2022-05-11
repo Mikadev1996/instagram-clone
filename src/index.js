@@ -21,7 +21,7 @@ import {
     arrayRemove,
     increment,
 } from "firebase/firestore";
-import {getAuth} from 'firebase/auth';
+import {getAuth, updateProfile} from 'firebase/auth';
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
 
 const firebaseAppConfig = getFirebaseConfig();
@@ -34,7 +34,7 @@ async function getDefaultImage() {
     return await getDownloadURL(defaultImageRef);
 }
 
-async function isUserSignedIn() {
+function isUserSignedIn() {
     return !!getAuth().currentUser;
 }
 
@@ -81,6 +81,7 @@ async function addProfileToDatabase() {
         username: getUserName(),
         userid: getAuth().currentUser.uid,
         likedPosts: [],
+        bio: "",
     })
 }
 
@@ -113,6 +114,35 @@ async function saveImagePost(file, caption) {
     }
 }
 
+async function updateDatabaseUserProfile(file, bio) {
+    try {
+        const auth = getAuth();
+        const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
+
+        const filePath = `${getAuth().currentUser.uid}/${userRef.id}/${file.name}`;
+        const newImageRef = ref(getStorage(), filePath);
+        const fileSnapshot = await uploadBytesResumable(newImageRef, file);
+
+        // 3 - Generate a public URL for the file.
+        const publicImageUrl = await getDownloadURL(newImageRef);
+
+        // await updateDoc(userRef, {
+        //     bio: bio,
+        //     imageUrl: publicImageUrl,
+        //     storageUri: fileSnapshot.metadata.fullPath,
+        // })
+        // 4 - Update the chat message placeholder with the image's URL.
+        updateProfile(auth.currentUser, {
+            photoURL: publicImageUrl,
+        })
+
+    }
+    catch (error) {
+        console.log('Error uploading file to cloud: ', error);
+    }
+}
+
+
 ReactDOM.render(
     <React.StrictMode>
         <RouteSwitch />
@@ -120,4 +150,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked, updateDatabaseUserProfile};
