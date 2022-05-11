@@ -13,6 +13,7 @@ import {
 } from "firebase/auth";
 import {addProfileToDatabase, getProfilePicUrl, getUserName, isUserSignedIn, saveImagePost} from "../../index";
 import {handleSignInError, handleSignUpError} from "../Nav/formErrors";
+import {collection, doc, getFirestore, query} from "firebase/firestore";
 
 const HomePage = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
@@ -21,6 +22,7 @@ const HomePage = () => {
     const [signedIn, setSignedIn] = useState(null);
     const [username, setUsername] = useState("");
     const [userProfilePic, setUserProfilePic] = useState(null);
+    const [newPost, setNewPost] = useState([]);
 
     const auth = getAuth()
     auth.onAuthStateChanged((user) => {
@@ -52,7 +54,9 @@ const HomePage = () => {
             .then(() => {
                 isUserSignedIn().then(r => console.log(r));
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+
+            });
     }
 
     function handleSignUpForm(e) {
@@ -98,7 +102,6 @@ const HomePage = () => {
                 setOpenSignIn(false);
             })
             .catch((error) => {
-                console.log(error)
                 handleSignInError(error.code);
             })
     }
@@ -121,6 +124,7 @@ const HomePage = () => {
         saveImagePost(image, caption)
             .then((r) => {
                 setOpenNewPost(false);
+                const postRef = doc(getFirestore(), "posts", postId);
             })
     }
 
@@ -142,7 +146,11 @@ const HomePage = () => {
                 openSignUp={openSignUp}
                 openSignIn={openSignIn}
             />
-            <PostsDisplay />
+            <PostsDisplay
+                username={username}
+                userProfilePic={userProfilePic}
+
+            />
         </div>
     )
 }

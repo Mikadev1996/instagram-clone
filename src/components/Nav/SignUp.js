@@ -9,7 +9,7 @@ const SignUp = ({handleCancel, handleSignUpForm}) => {
                  <form className="form">
                      <div className="form-control">
                          <label htmlFor="username" >Username</label>
-                         <input type="text" placeholder="Username" id="username" />
+                         <input type="text" placeholder="Username" id="username" maxLength="16"/>
                          <i className="fas fa-check-circle"></i>
                          <i className="fas fa-exclamation-circle"></i>
                          <small id="username-signup-error">Error Message</small>

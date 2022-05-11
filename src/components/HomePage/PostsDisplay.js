@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Post from "./Post";
 import MainPostStyle from '../styles/MainPostsDisplay.scss'
-import {getProfilePicUrl} from "../../index";
-import {getAuth} from "firebase/auth";
 import {
     collection, doc,
     getDoc,
@@ -12,35 +10,16 @@ import {
     orderBy,
     query,
     startAfter,
-    onSnapshot,
 } from "firebase/firestore";
 
-//TODO: MAP POSTS FROM DATABASE TO NEWPOST COMPONENT
-
-const PostsDisplay = () => {
-    const [username, setUsername] = useState("");
-    const [userProfilePic, setUserProfilePic] = useState(null);
+const PostsDisplay = ({username, userProfilePic}) => {
     const [displayedPosts, setDisplayedPosts] = useState([]);
-    const [counter, setCounter] = useState(0);
     const [noMorePosts, setNoMorePosts] = useState(false);
-
-    const auth = getAuth()
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            setUsername(user.displayName);
-            setUserProfilePic(getProfilePicUrl());
-        }
-        else {
-            setUsername("");
-            setUserProfilePic(null);
-        }
-    })
 
     // Load Images on page load
     useEffect(() => {
         async function loadImages() {
-            setCounter(counter + 1);
-            if (counter < 100 && username !== "") {
+            if (username !== "") {
                 const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp', 'desc'), limit(3));
                 const querySnapshot = await getDocs(recentImagesQuery);
                 querySnapshot.forEach((doc) => {
@@ -61,25 +40,29 @@ const PostsDisplay = () => {
     }
 
     async function loadImagesOnScroll() {
-        const lastVisible2 = displayedPosts[displayedPosts.length - 1].postId;
-        const lastVisibleRef = doc(getFirestore(), "posts", lastVisible2);
-        const lastSnap = await getDoc(lastVisibleRef);
+        try {
+            const lastVisible2 = displayedPosts[displayedPosts.length - 1].postId;
+            const lastVisibleRef = doc(getFirestore(), "posts", lastVisible2);
+            const lastSnap = await getDoc(lastVisibleRef);
 
-        const next = query(collection(getFirestore(), "posts"),
-            orderBy("timestamp", "desc"),
-            startAfter(lastSnap.data().timestamp),
-            limit(3));
+            const next = query(collection(getFirestore(), "posts"),
+                orderBy("timestamp", "desc"),
+                startAfter(lastSnap.data().timestamp),
+                limit(3));
 
-        const nextSnap = await getDocs(next);
-        if (nextSnap.empty) {
-            setNoMorePosts(true);
-            return
+            const nextSnap = await getDocs(next);
+            if (nextSnap.empty) {
+                setNoMorePosts(true);
+                return
+            }
+            nextSnap.forEach((doc) => {
+                let post = {...doc.data(), postId: doc.id};
+                setDisplayedPosts(displayedPosts => [...displayedPosts, post]);
+            })
         }
-        nextSnap.forEach((doc) => {
-            let post = {...doc.data(), postId: doc.id};
-            setDisplayedPosts(displayedPosts => [...displayedPosts, post]);
-        })
+        catch (error) {
 
+        }
     }
 
 

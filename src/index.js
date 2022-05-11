@@ -42,7 +42,7 @@ function getProfilePicUrl() {
 }
 
 async function getUserProfilePic(uid) {
-    const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
+    const userRef = doc(getFirestore(), "users", uid);
     const userSnap = await getDoc(userRef);
     const userData = userSnap.data();
     return userData.profilePicUrl;
@@ -111,6 +111,9 @@ async function saveImagePost(file, caption) {
             imageUrl: publicImageUrl,
             storageUri: fileSnapshot.metadata.fullPath
         });
+
+
+        return imageRef.id;
     }
     catch (error) {
         console.log('Error uploading file to cloud: ', error);
