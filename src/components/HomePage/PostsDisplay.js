@@ -40,7 +40,7 @@ const PostsDisplay = () => {
     useEffect(() => {
         async function loadImages() {
             setCounter(counter + 1);
-            if (counter < 100) {
+            if (counter < 100 && username !== "") {
                 const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp', 'desc'), limit(3));
                 const querySnapshot = await getDocs(recentImagesQuery);
                 querySnapshot.forEach((doc) => {
@@ -52,7 +52,7 @@ const PostsDisplay = () => {
             }
         }
         loadImages()
-    }, []);
+    }, [username]);
 
     window.onscroll = () => {
         if (window.scrollY + window.innerHeight === document.body.scrollHeight) {

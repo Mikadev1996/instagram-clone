@@ -126,7 +126,6 @@ const HomePage = () => {
 
     return (
         <div className="app">
-
             <NavBar
                 handleCreateNewPost={handleCreateNewPost}
                 handleCancel={handleCancel}
