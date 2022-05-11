@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import NavBar from "../Nav/NavBar";
-import ProfileStyle from '../styles/ProfilePage.sass';
+import ProfileStyle from '../styles/ProfilePage.scss';
 import PreviewPost from "./PreviewPost";
 import {getProfilePicUrl, updateDatabaseUserProfile} from "../../index";
-import EditProfileMenu from "./EditProfileMenu";
 import {getAuth} from "firebase/auth";
 import {collection, doc, getDoc, getDocs, getFirestore, query, where} from "firebase/firestore";
+import ProfileDisplay from "./ProfileDisplay";
 
 const ProfilePage = () => {
     const [editProfile, setEditProfile] = useState(false);
@@ -25,6 +25,10 @@ const ProfilePage = () => {
         }
     })
 
+    const handleEditProfile = () => {
+        setEditProfile(editProfile => !editProfile);
+    }
+
     useEffect(() => {
         async function loadUserImages() {
             if (username !== "") {
@@ -41,9 +45,6 @@ const ProfilePage = () => {
         loadUserImages()
     }, [username]);
 
-    const handleEditProfile = () => {
-        setEditProfile(editProfile => !editProfile);
-    }
 
     const updateProfile = () => {
         const newProfilePic = document.getElementById("new-profile-image").files[0];
@@ -56,38 +57,19 @@ const ProfilePage = () => {
 
     return (
         <div className="app">
-            <NavBar />
-            <div className="content">
-                {editProfile && <EditProfileMenu handleEditProfile={handleEditProfile} updateProfile={updateProfile}/>}
-                <div className="profile-container">
-                    <div className="profile-info">
-                        <div className="profile-info-picture"><img src={userProfilePic} alt="user-profile-pic" className="page-profile-pic"/></div>
-                        <div className="profile-info-details">
-                            <div className="profile-info-detail">
-                                <p className="profile-username">{username}</p>
-                                <button onClick={() => handleEditProfile()}>Edit Profile</button>
-                            </div>
-                            <ul className="profile-info-detail">
-                                <li>No. Posts: {userPosts.length}</li>
-                            </ul>
-                            <div className="profile-info-detail">
-                                User Biography
-                            </div>
-                        </div>
-                    </div>
-                    <hr className="profile-separator"/>
-                    <div className="profile-user-posts">
-                        <h1 className="posts-title">POSTS</h1>
-                        <div className="grid-container">
-                            {(userPosts.length > 0) && userPosts.map((data) => {
-                                return (
-                                    <PreviewPost imageUrl={data.imageUrl}/>
-                                )
-                            })}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <NavBar
+                username={username}
+                userProfilePic={userProfilePic}
+            />
+            <ProfileDisplay
+                username={username}
+                userProfilePic={userProfilePic}
+                editProfile={editProfile}
+                userPosts={userPosts}
+                handleEditProfile={handleEditProfile}
+                updateProfile={updateProfile}
+
+            />
         </div>
     )
 }

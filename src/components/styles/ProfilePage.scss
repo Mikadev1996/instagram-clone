@@ -1,0 +1,88 @@
+li {
+    margin: 0;
+    padding: 0;
+}
+.profile-container {
+    width: 48rem;
+}
+
+.profile-info {
+    margin-top: 50px;
+    width: 100%;
+    height: 200px;
+    background: #202124;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile-info-picture {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profile-info-details {
+    height: 100%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 50px;
+}
+.profile-info-detail {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+}
+.profile-username {
+    margin-right: 20px;
+}
+.profile-user-posts {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.page-profile-pic {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 1px solid #3c4043;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-gap: 20px;
+}
+.grid-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    width: 200px;
+    height: auto;
+    border: 1px solid #202124;
+}
+
+.grid-item {
+    display: flex;
+    background: black;
+    width: 200px;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+
+}
+.grid-div:hover {
+    border: 1px solid #3c4043;
+}
+.profile-separator {
+    width: 640px;
+    border: 1px solid #3c4043;
+}
+
+.posts-title {
+    font-size: 16px;
+}

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import NewPostStyle from '../styles/NewPost.scss';
 import moment from "moment";
-import whiteLikeIcon from '../images/white-like-icon.png';
-import redLikeIcon from '../images/red-like-icon.png';
+import whiteLikeIcon from '../../images/white-like-icon.png';
+import redLikeIcon from '../../images/red-like-icon.png';
 import {getAuth} from "firebase/auth";
 import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, likeImagePost} from "../../index";
 import {doc, getDoc, getFirestore} from "firebase/firestore";

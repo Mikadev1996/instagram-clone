@@ -54,9 +54,6 @@ const PostsDisplay = () => {
         loadImages()
     }, []);
 
-    // Load Images on end of scroll
-    const initialScrollHeight = document.body.scrollHeight
-    //&& (document.body.scrollHeight > initialScrollHeight)
     window.onscroll = () => {
         if (window.scrollY + window.innerHeight === document.body.scrollHeight) {
             loadImagesOnScroll()

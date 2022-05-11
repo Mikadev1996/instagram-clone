@@ -1,127 +1,13 @@
-import React, {useEffect, useState} from "react";
-import logo from '../images/logo.png';
+import React from "react";
+import logo from '../../images/logo-white.png';
 import navbarStyles from '../styles/NavBar.scss';
 import loader from '../styles/loader.scss';
 import {Link} from "react-router-dom";
 import CreatePostMenu from "./CreatePostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {isUserSignedIn, getProfilePicUrl, getUserName, saveImagePost, addProfileToDatabase} from "../../index";
-import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth";
-import handleFormError from "./formErrors";
-import {addDoc, collection, getFirestore, serverTimestamp} from "firebase/firestore";
 
-const NavBar = () => {
-    const [openNewPost, setOpenNewPost] = useState(false);
-    const [openSignUp, setOpenSignUp] = useState(false);
-    const [openSignIn, setOpenSignIn] = useState(false);
-    const [signedIn, setSignedIn] = useState(null);
-    const [username, setUsername] = useState("");
-    const [userProfilePic, setUserProfilePic] = useState(null);
-
-    const auth = getAuth()
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            setSignedIn(true);
-            setUsername(getUserName());
-            setUserProfilePic(getProfilePicUrl());
-        }
-        else {
-            setSignedIn(false);
-        }
-    })
-
-    function handleOpenSignUp(e) {
-        e.preventDefault();
-        setOpenSignUp(true);
-    }
-
-    function handleOpenSignIn(e) {
-        e.preventDefault();
-        setOpenSignIn(true);
-    }
-
-    function handleSignOut(e) {
-        e.preventDefault();
-        signOut(getAuth()).then(() => {
-            setSignedIn(false);
-        })
-            .then(() => {
-                isUserSignedIn().then(r => console.log(r));
-            })
-            .catch(error => {
-                console.log(error.message);
-            })
-    }
-
-    function handleSignUpForm(e) {
-        e.preventDefault();
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const username = document.getElementById("username").value;
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(() => {
-                Promise.all([
-                    updateProfile(auth.currentUser, {
-                    displayName: username,
-                    photoURL: "https://firebasestorage.googleapis.com/v0/b/instagram-clone-9a4b3.appspot.com/o/default_photo.png?alt=media&token=97360e51-f17e-4989-9ced-a0bd4f066e2b"
-                }),
-                    addProfileToDatabase()
-                ])
-                    .then(() => {
-                        setSignedIn(true);
-                        setOpenSignUp(false);
-                    })
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-            })
-    }
-
-    function handleSignInForm(e) {
-        e.preventDefault();
-        const email = document.getElementById("email-login").value;
-        const password = document.getElementById("password-login").value;
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user)
-            })
-            .then(() => {
-                setSignedIn(true);
-                setOpenSignIn(false);
-            })
-            .catch((error) => {
-                console.log(error.code);
-                handleFormError(error.code);
-            })
-    }
-
-    function handleCancel(e) {
-        e.preventDefault();
-        setOpenSignUp(false);
-        setOpenSignIn(false);
-    }
-
-    function handleCreateNewPostMenu(e) {
-        e.preventDefault();
-        setOpenNewPost(openNewPost => !openNewPost);
-    }
-
-    function handleCreateNewPost(e) {
-        e.preventDefault();
-        const image = document.getElementById("user-upload-image").files[0];
-        const caption = document.getElementById("image-caption").value;
-        saveImagePost(image, caption)
-            .then((r) => {
-                setOpenNewPost(false);
-            })
-    }
-
+const NavBar = ({signedIn, handleCreateNewPost, handleOpenSignIn, handleOpenSignUp, handleSignOut, username, handleCreateNewPostMenu, handleCancel, handleSignUpForm, openSignUp, openSignIn, handleSignInForm, openNewPost, userProfilePic}) => {
     return (
         <div>
             <nav>
