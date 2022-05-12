@@ -55,6 +55,12 @@ async function checkIfImageLiked(postId) {
     return (userData.likedPosts.includes(postId));
 }
 
+async function getPost(postId) {
+    const postRef = doc(getFirestore(), "posts", postId);
+    const postSnap = await getDoc(postRef);
+    return postSnap.data();
+}
+
 async function likeImagePost(postId) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
     const postRef = doc(getFirestore(), "posts", postId);
@@ -78,7 +84,7 @@ async function likeImagePost(postId) {
     }
 }
 
-async function addProfileToDatabase(displayName) {
+async function addProfileToDatabase() {
     await setDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
         username: getUserName(),
         userid: getAuth().currentUser.uid,
@@ -111,7 +117,6 @@ async function saveImagePost(file, caption) {
             imageUrl: publicImageUrl,
             storageUri: fileSnapshot.metadata.fullPath
         });
-
 
         return imageRef.id;
     }
@@ -156,4 +161,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked, updateDatabaseUserProfile};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked, updateDatabaseUserProfile, getPost};

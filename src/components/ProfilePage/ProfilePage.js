@@ -45,7 +45,6 @@ const ProfilePage = () => {
         loadUserImages()
     }, [username]);
 
-
     const updateProfile = () => {
         const newProfilePic = document.getElementById("new-profile-image").files[0];
         const profileBio = document.getElementById("new-profile-bio");

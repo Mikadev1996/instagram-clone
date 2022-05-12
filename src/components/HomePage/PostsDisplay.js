@@ -12,7 +12,7 @@ import {
     startAfter,
 } from "firebase/firestore";
 
-const PostsDisplay = ({username, userProfilePic}) => {
+const PostsDisplay = ({username, userProfilePic, newPost}) => {
     const [displayedPosts, setDisplayedPosts] = useState([]);
     const [noMorePosts, setNoMorePosts] = useState(false);
 
@@ -32,6 +32,10 @@ const PostsDisplay = ({username, userProfilePic}) => {
         }
         loadImages()
     }, [username]);
+
+    useEffect(() => {
+        console.log(newPost);
+    }, [newPost]);
 
     window.onscroll = () => {
         if (window.scrollY + window.innerHeight === document.body.scrollHeight) {

@@ -3,7 +3,6 @@ import NavBar from "../Nav/NavBar";
 import HomePageStyle from '../styles/HomePage.scss';
 import CreateNewPost from "./CreatePostMenu";
 import PostsDisplay from "./PostsDisplay";
-import CreatePostMenu from "./CreatePostMenu";
 import {
     createUserWithEmailAndPassword,
     getAuth,
@@ -11,9 +10,8 @@ import {
     signOut,
     updateProfile
 } from "firebase/auth";
-import {addProfileToDatabase, getProfilePicUrl, getUserName, isUserSignedIn, saveImagePost} from "../../index";
+import {addProfileToDatabase, getPost, getProfilePicUrl, getUserName, isUserSignedIn, saveImagePost} from "../../index";
 import {handleSignInError, handleSignUpError} from "../Nav/formErrors";
-import {collection, doc, getFirestore, query} from "firebase/firestore";
 
 const HomePage = () => {
     const [openNewPost, setOpenNewPost] = useState(false);
@@ -124,7 +122,12 @@ const HomePage = () => {
         saveImagePost(image, caption)
             .then((r) => {
                 setOpenNewPost(false);
-                const postRef = doc(getFirestore(), "posts", postId);
+
+                getPost(r)
+                    .then(r => {
+                        setNewPost(newPost => [r]);
+                    })
+
             })
     }
 
@@ -147,6 +150,7 @@ const HomePage = () => {
                 openSignIn={openSignIn}
             />
             <PostsDisplay
+                newPost={newPost}
                 username={username}
                 userProfilePic={userProfilePic}
 
