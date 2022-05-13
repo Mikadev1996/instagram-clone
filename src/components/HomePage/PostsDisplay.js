@@ -34,7 +34,9 @@ const PostsDisplay = ({username, userProfilePic, newPost}) => {
     }, [username]);
 
     useEffect(() => {
-        console.log(newPost);
+        if (newPost.length > 0) {
+            setDisplayedPosts(displayedPosts => [newPost[0], ...displayedPosts]);
+        }
     }, [newPost]);
 
     window.onscroll = () => {

@@ -58,7 +58,7 @@ async function checkIfImageLiked(postId) {
 async function getPost(postId) {
     const postRef = doc(getFirestore(), "posts", postId);
     const postSnap = await getDoc(postRef);
-    return postSnap.data();
+    return {...postSnap.data(), postId};
 }
 
 async function likeImagePost(postId) {

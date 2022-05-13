@@ -127,7 +127,6 @@ const HomePage = () => {
                     .then(r => {
                         setNewPost(newPost => [r]);
                     })
-
             })
     }
 
