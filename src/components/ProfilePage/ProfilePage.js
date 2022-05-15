@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import NavBar from "../Nav/NavBar";
 import ProfileStyle from '../styles/ProfilePage.scss';
 import PreviewPost from "./PreviewPost";
-import {getProfilePicUrl, updateDatabaseUserProfile} from "../../index";
+import {getProfilePicUrl, getUserProfileBio, updateDatabaseUserProfile} from "../../index";
 import {getAuth} from "firebase/auth";
 import {collection, getDocs, getFirestore, query, where} from "firebase/firestore";
 import ProfileDisplay from "./ProfileDisplay";
@@ -12,12 +12,14 @@ const ProfilePage = () => {
     const [userPosts, setUserPosts] = useState([]);
     const [username, setUsername] = useState("");
     const [userProfilePic, setUserProfilePic] = useState(null);
+    const [userBio, setUserBio] = useState("");
 
     const auth = getAuth()
     auth.onAuthStateChanged((user) => {
         if (user) {
             setUsername(user.displayName);
             setUserProfilePic(getProfilePicUrl());
+            getUserProfileBio(getAuth().currentUser.uid).then(r => setUserBio(r));
         }
         else {
             setUsername("");
@@ -47,9 +49,8 @@ const ProfilePage = () => {
 
     const updateProfile = () => {
         const newProfilePic = document.getElementById("new-profile-image").files[0];
-        const profileBio = document.getElementById("new-profile-bio");
+        const profileBio = document.getElementById("new-profile-bio").value;
         updateDatabaseUserProfile(newProfilePic, profileBio).then(r => {
-            console.log("profile update done?")
             setEditProfile(false);
         })
     }
@@ -67,6 +68,7 @@ const ProfilePage = () => {
                 userPosts={userPosts}
                 handleEditProfile={handleEditProfile}
                 updateProfile={updateProfile}
+                userBio={userBio}
             />
         </div>
     )

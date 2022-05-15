@@ -48,6 +48,13 @@ async function getUserProfilePic(uid) {
     return userData.profilePicUrl;
 }
 
+async function getUserProfileBio(uid) {
+    const userRef = doc(getFirestore(), "users", uid);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+    return userData.bio;
+}
+
 async function checkIfImageLiked(postId) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
     const userSnap = await getDoc(userRef);
@@ -84,9 +91,9 @@ async function likeImagePost(postId) {
     }
 }
 
-async function addProfileToDatabase() {
+async function addProfileToDatabase(username) {
     await setDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
-        username: getUserName(),
+        username: username,
         userid: getAuth().currentUser.uid,
         likedPosts: [],
         bio: "",
@@ -98,10 +105,10 @@ async function saveImagePost(file, caption) {
     try {
         const imageRef = await addDoc(collection(getFirestore(), 'posts'), {
             name: getUserName(),
+            posterUid: getAuth().currentUser.uid,
             imageUrl: "LOADING_IMAGE_URL",
             likes: 0,
             caption: caption,
-            profilePicUrl: getProfilePicUrl(),
             timestamp: serverTimestamp()
         });
 
@@ -127,26 +134,27 @@ async function saveImagePost(file, caption) {
 
 async function updateDatabaseUserProfile(file, bio) {
     try {
-        const auth = getAuth();
         const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
+        if (file) {
+            const filePath = `${getAuth().currentUser.uid}/${userRef.id}/${file.name}`;
+            const newImageRef = ref(getStorage(), filePath);
+            const fileSnapshot = await uploadBytesResumable(newImageRef, file);
+            const publicImageUrl = await getDownloadURL(newImageRef);
 
-        const filePath = `${getAuth().currentUser.uid}/${userRef.id}/${file.name}`;
-        const newImageRef = ref(getStorage(), filePath);
-        const fileSnapshot = await uploadBytesResumable(newImageRef, file);
+            await updateDoc(userRef, {
+                profilePicUrl: publicImageUrl,
+            })
 
-        // 3 - Generate a public URL for the file.
-        const publicImageUrl = await getDownloadURL(newImageRef);
+            updateProfile(getAuth().currentUser, {
+                photoURL: publicImageUrl,
+            })
+        }
 
-        // await updateDoc(userRef, {
-        //     bio: bio,
-        //     imageUrl: publicImageUrl,
-        //     storageUri: fileSnapshot.metadata.fullPath,
-        // })
-        // 4 - Update the chat message placeholder with the image's URL.
-        updateProfile(auth.currentUser, {
-            photoURL: publicImageUrl,
-        })
-
+        if (bio) {
+            await updateDoc(userRef, {
+                bio: bio,
+            })
+        }
     }
     catch (error) {
         console.log('Error uploading file to cloud: ', error);
@@ -161,4 +169,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked, updateDatabaseUserProfile, getPost};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked, updateDatabaseUserProfile, getPost, getUserProfilePic, getUserProfileBio};

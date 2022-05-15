@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Post from "./Post";
-import MainPostStyle from '../styles/MainPostsDisplay.scss'
+import MainPostStyle from '../styles/PostsDisplay.scss'
 import {
     collection, doc,
     getDoc,
@@ -84,16 +84,29 @@ const PostsDisplay = ({username, userProfilePic, newPost}) => {
                               likes={data.likes}
                               id={data.postId}
                               key={data.postId}
+                              posterUid={data.posterUid}
                         />
                     )
                 })}
-                {noMorePosts && <div id="no-more-posts">
+                {noMorePosts &&
+                <div id="no-more-posts">
                     No More Posts
                 </div>}
             </div>
             <div id="main-profile-display">
                 {userProfilePic !== null && <img src={userProfilePic}  alt="profile pic" id="main-display-user-image"/>}
                 <p>{username}</p>
+                <div id="float-info">
+                    <ul>
+                        <li>About ・</li>
+                        <li>Help ・</li>
+                        <li>Jobs ・</li>
+                        <li>Privacy ・</li>
+                        <li>Terms ・</li>
+                        <li>Language</li>
+                    </ul>
+                    <p>© 2022 Clone INSTAGRAM FROM MIKA</p>
+                </div>
             </div>
         </div>
     )

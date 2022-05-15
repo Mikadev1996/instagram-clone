@@ -3,13 +3,19 @@ import EditProfileMenu from "./EditProfileMenu";
 import PreviewPost from "./PreviewPost";
 import ProfileInfo from "./ProfileInfo";
 
-const ProfileDisplay = ({username, userPosts, userProfilePic, editProfile, updateProfile, handleEditProfile}) => {
+const ProfileDisplay = ({username, userPosts, userProfilePic, editProfile, updateProfile, handleEditProfile, userBio}) => {
 
     return (
         <div className="content">
             {editProfile && <EditProfileMenu handleEditProfile={handleEditProfile} updateProfile={updateProfile}/>}
             <div className="profile-container">
-                <ProfileInfo username={username} userProfilePic={userProfilePic} userPosts={userPosts} handleEditProfile={handleEditProfile}/>
+                <ProfileInfo username={username}
+                             userProfilePic={userProfilePic}
+                             userPosts={userPosts}
+                             handleEditProfile={handleEditProfile}
+                             userBio={userBio}
+                />
+
                 <hr className="profile-separator"/>
                 <div className="profile-user-posts">
                     <h1 className="posts-title">POSTS</h1>

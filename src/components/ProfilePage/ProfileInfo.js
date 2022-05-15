@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileInfo = ({username, userProfilePic, userPosts, handleEditProfile}) => {
+const ProfileInfo = ({username, userProfilePic, userPosts, handleEditProfile, userBio}) => {
     return (
         <div className="profile-info">
             <div className="profile-info-picture"><img src={userProfilePic} alt="user-profile-pic" className="page-profile-pic"/></div>
@@ -13,7 +13,7 @@ const ProfileInfo = ({username, userProfilePic, userPosts, handleEditProfile}) =
                     <li><strong>{userPosts.length}</strong> Posts</li>
                 </ul>
                 <div className="profile-info-detail">
-                    User Biography
+                    {userBio}
                 </div>
             </div>
         </div>

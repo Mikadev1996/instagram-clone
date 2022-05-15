@@ -4,12 +4,13 @@ import moment from "moment";
 import whiteLikeIcon from '../../images/white-like-icon.png';
 import redLikeIcon from '../../images/red-like-icon.png';
 import {getAuth} from "firebase/auth";
-import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, likeImagePost} from "../../index";
+import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, getUserProfilePic, likeImagePost} from "../../index";
 import {doc, getDoc, getFirestore} from "firebase/firestore";
 
-const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id}) => {
+const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, posterUid}) => {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(likes);
+    const [profileUrl, setProfileUrl] = useState("");
     let date;
     if (timestamp) {
         let d = new Date(timestamp * 1000);
@@ -23,6 +24,12 @@ const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id}) =>
                     setIsLiked(true);
                 }
             });
+        getUserProfilePic(posterUid)
+            .then(r => {
+                if (r) {
+                    setProfileUrl(r);
+                }
+            })
     }, []);
 
 
@@ -32,7 +39,7 @@ const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id}) =>
         <div className="post">
             <div className="post-nav">
                 <div>
-                    <img className="nav-profile-pic" alt="profile-pic" src={profilePic} />
+                    <img className="nav-profile-pic" alt="profile-pic" src={profileUrl} />
                 </div>
                 <div>
                     <p>{username}</p>
