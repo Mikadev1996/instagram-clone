@@ -6,6 +6,7 @@ import redLikeIcon from '../../images/red-like-icon.png';
 import {getAuth} from "firebase/auth";
 import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, getUserProfilePic, likeImagePost} from "../../index";
 import {doc, getDoc, getFirestore} from "firebase/firestore";
+import {Link} from "react-router-dom";
 
 const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, posterUid}) => {
     const [isLiked, setIsLiked] = useState(false);
@@ -42,7 +43,7 @@ const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, pos
                     <img className="nav-profile-pic" alt="profile-pic" src={profileUrl} />
                 </div>
                 <div>
-                    <p>{username}</p>
+                    <Link to={`/user/${posterUid}`}><p>{username}</p></Link>
                 </div>
             </div>
             <div>
@@ -50,6 +51,7 @@ const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, pos
             </div>
             <div className="post-info">
                 <img src={likeIcon} alt="like" className="like-icon" onClick={() => {
+                    console.log("btn clicked)");
                     setIsLiked(!isLiked);
                     isLiked ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
                     likeImagePost(id);
