@@ -6,7 +6,7 @@ import redLikeIcon from '../../images/red-like-icon.png';
 import {getAuth} from "firebase/auth";
 import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, getUserProfilePic, likeImagePost} from "../../index";
 import {doc, getDoc, getFirestore} from "firebase/firestore";
-import {Link} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
 const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, posterUid}) => {
     const [isLiked, setIsLiked] = useState(false);
@@ -33,22 +33,23 @@ const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, pos
             })
     }, []);
 
-
     const likeIcon = isLiked ? redLikeIcon : whiteLikeIcon;
 
     return (
         <div className="post">
-            <div className="post-nav">
-                <div>
-                    <img className="nav-profile-pic" alt="profile-pic" src={profileUrl} />
+            <Link to={`user/${posterUid}`}>
+                <div className="post-nav">
+                    <div>
+                        <img className="nav-profile-pic" alt="profile-pic" src={profileUrl} />
+                    </div>
+                    <div>
+                        <p>{username}</p>
+                    </div>
                 </div>
                 <div>
-                    <Link to={`/user/${posterUid}`}><p>{username}</p></Link>
+                    <img src={postUrl} alt="post" className="post-image"/>
                 </div>
-            </div>
-            <div>
-                <img src={postUrl} alt="post" className="post-image"/>
-            </div>
+            </Link>
             <div className="post-info">
                 <img src={likeIcon} alt="like" className="like-icon" onClick={() => {
                     console.log("btn clicked)");

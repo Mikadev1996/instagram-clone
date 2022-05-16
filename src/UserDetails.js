@@ -1,10 +1,10 @@
 import React from "react";
 
-const UserDetails = () => {
+const UserDetails = ({uid}) => {
     return (
-        <div>
+        <div className="content">
             <div>
-                Username
+                This users UID: {uid}
             </div>
         </div>
     )
