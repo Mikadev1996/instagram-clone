@@ -11,6 +11,7 @@ const ProfilePage = () => {
     const [username, setUsername] = useState("");
     const [userProfilePic, setUserProfilePic] = useState(null);
     const [userBio, setUserBio] = useState("");
+    const isCurrentUser = true;
 
     const auth = getAuth()
     auth.onAuthStateChanged((user) => {
@@ -77,6 +78,7 @@ const ProfilePage = () => {
                 handleEditProfile={handleEditProfile}
                 updateProfile={updateProfile}
                 userBio={userBio}
+                isCurrentUser={isCurrentUser}
             />
         </div>
     )

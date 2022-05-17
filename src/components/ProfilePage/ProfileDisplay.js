@@ -3,7 +3,7 @@ import EditProfileMenu from "./EditProfileMenu";
 import PreviewPost from "./PreviewPost";
 import ProfileInfo from "./ProfileInfo";
 
-const ProfileDisplay = ({username, userPosts, userProfilePic, editProfile, updateProfile, handleEditProfile, userBio}) => {
+const ProfileDisplay = ({username, userPosts, userProfilePic, editProfile, updateProfile, handleEditProfile, userBio, isCurrentUser}) => {
 
     return (
         <div className="content">
@@ -14,7 +14,7 @@ const ProfileDisplay = ({username, userPosts, userProfilePic, editProfile, updat
                              userPosts={userPosts}
                              handleEditProfile={handleEditProfile}
                              userBio={userBio}
-                             editProfile={editProfile}
+                             isCurrentUser={isCurrentUser}
                 />
 
                 <hr className="profile-separator"/>
