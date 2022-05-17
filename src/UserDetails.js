@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {getUserData, loadUserImages} from "./index";
+import {getUserData, loadUserImages, updateDatabaseUserProfile} from "./index";
 import ProfileDisplay from "./components/ProfilePage/ProfileDisplay";
 
-const UserDetails = ({uid, isCurrentUser, editProfile, updateProfile, handleEditProfile}) => {
+const UserDetails = ({uid, isCurrentUser}) => {
     const [userData, setUserData] = useState({});
+    const [editProfile, setEditProfile] = useState(false);
     const [userPosts, setUserPosts] = useState([]);
 
     useEffect(() => {
@@ -24,7 +25,20 @@ const UserDetails = ({uid, isCurrentUser, editProfile, updateProfile, handleEdit
                     })
                 })
         }
-    }, [userData])
+    }, [userData.username])
+
+    const handleEditProfile = () => {
+        setEditProfile(editProfile => !editProfile);
+    }
+
+    const updateProfile = () => {
+        const newProfilePic = document.getElementById("new-profile-image").files[0];
+        const profileBio = document.getElementById("new-profile-bio").value;
+        updateDatabaseUserProfile(newProfilePic, profileBio).then(r => {
+            setEditProfile(false);
+            setUserData({...userData, ...r })
+        })
+    }
 
     return (
         <div>

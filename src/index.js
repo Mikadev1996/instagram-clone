@@ -135,6 +135,7 @@ async function saveImagePost(file, caption) {
 
 async function updateDatabaseUserProfile(file, bio) {
     try {
+        let newObj = {};
         const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
         if (file) {
             const filePath = `${getAuth().currentUser.uid}/${userRef.id}/${file.name}`;
@@ -149,13 +150,19 @@ async function updateDatabaseUserProfile(file, bio) {
             updateProfile(getAuth().currentUser, {
                 photoURL: publicImageUrl,
             })
+
+            newObj = {profilePicUrl: publicImageUrl};
         }
 
         if (bio) {
             await updateDoc(userRef, {
                 bio: bio,
             })
+
+            newObj = {...newObj, bio: bio};
         }
+
+        return newObj;
     }
     catch (error) {
         console.log('Error uploading file to cloud: ', error);
