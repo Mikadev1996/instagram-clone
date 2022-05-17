@@ -60,7 +60,7 @@ const Post = ({postUrl, username, caption, timestamp, likes, id, posterUid}) => 
                     likeImagePost(id);
                 }}/>
                 <p className="post-likes">Liked by <strong>{likeCount}</strong> users</p>
-                <p><strong>{username}</strong>{caption}</p>
+                <Link to={`user/${posterUid}`}><p><strong>{username}</strong>{caption}</p></Link>
                 <p className="post-date">{date}</p>
             </div>
         </div>
