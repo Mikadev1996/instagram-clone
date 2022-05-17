@@ -21,7 +21,7 @@ const PostsDisplay = ({username, userProfilePic, newPost}) => {
     useEffect(() => {
         async function loadImages() {
             console.log(username)
-            if (username !== "") {
+            if (username !== "" && username !== null) {
                 const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp', 'desc'), limit(3));
                 const querySnapshot = await getDocs(recentImagesQuery);
                 querySnapshot.forEach((doc) => {
