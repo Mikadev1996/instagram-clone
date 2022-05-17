@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import NavBar from "../Nav/NavBar";
 import HomePageStyle from '../styles/HomePage.scss';
-import CreateNewPost from "./CreatePostMenu";
 import PostsDisplay from "./PostsDisplay";
 import {
     createUserWithEmailAndPassword,
@@ -21,6 +20,7 @@ const HomePage = () => {
     const [username, setUsername] = useState("");
     const [userProfilePic, setUserProfilePic] = useState(null);
     const [newPost, setNewPost] = useState([]);
+    const [uid, setUid] = useState("");
 
     const auth = getAuth()
     auth.onAuthStateChanged((user) => {
@@ -28,6 +28,7 @@ const HomePage = () => {
             setSignedIn(true);
             setUsername(getUserName());
             setUserProfilePic(getProfilePicUrl());
+            setUid(auth.currentUser.uid);
         }
         else {
             setSignedIn(false);
@@ -49,12 +50,6 @@ const HomePage = () => {
         signOut(getAuth()).then(() => {
             setSignedIn(false);
         })
-            .then(() => {
-                isUserSignedIn().then(r => console.log(r));
-            })
-            .catch(error => {
-
-            });
     }
 
     function handleSignUpForm(e) {
@@ -147,6 +142,7 @@ const HomePage = () => {
                 openNewPost={openNewPost}
                 openSignUp={openSignUp}
                 openSignIn={openSignIn}
+                uid={uid}
             />
             <PostsDisplay
                 newPost={newPost}

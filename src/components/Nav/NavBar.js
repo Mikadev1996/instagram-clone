@@ -7,7 +7,7 @@ import CreatePostMenu from "../HomePage/CreatePostMenu";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 
-const NavBar = ({signedIn, handleCreateNewPost, handleOpenSignIn, handleOpenSignUp, handleSignOut, username, handleCreateNewPostMenu, handleCancel, handleSignUpForm, openSignUp, openSignIn, handleSignInForm, openNewPost, userProfilePic}) => {
+const NavBar = ({signedIn, handleCreateNewPost, handleOpenSignIn, handleOpenSignUp, handleSignOut, username, handleCreateNewPostMenu, handleCancel, handleSignUpForm, openSignUp, openSignIn, handleSignInForm, openNewPost, userProfilePic, uid}) => {
     return (
         <div>
             <nav>
@@ -25,7 +25,7 @@ const NavBar = ({signedIn, handleCreateNewPost, handleOpenSignIn, handleOpenSign
                         <ul>
                             <Link to="/"><li>Home</li></Link>
                             {signedIn && <li onClick={(e) => handleCreateNewPostMenu(e)}>New Post</li>}
-                            {signedIn && <Link to="/user-page"><img src={userProfilePic} alt="user-profile-pic" className="nav-profile-pic"/></Link>}
+                            {(uid !== "") && userProfilePic && <Link to={`/user/${uid}`}><img src={userProfilePic} alt="user-profile-pic" className="nav-profile-pic"/></Link>}
                         </ul>
                     </div>
                 </div>

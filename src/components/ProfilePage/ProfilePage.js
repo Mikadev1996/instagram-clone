@@ -31,18 +31,6 @@ const ProfilePage = () => {
     }
 
     useEffect(() => {
-        // async function loadUserImages() {
-        //     if (username !== "") {
-        //         const recentImagesQuery = query(collection(getFirestore(), 'posts'), where("name", "==", username));
-        //         const querySnapshot = await getDocs(recentImagesQuery);
-        //         querySnapshot.forEach((doc) => {
-        //             let post = {...doc.data(), postId: doc.id};
-        //             if (post.imageUrl !== "LOADING_IMAGE_URL") {
-        //                 setUserPosts(userPosts => [...userPosts, post]);
-        //             }
-        //         })
-        //     }
-        // }
         if (username !== "") {
             loadUserImages(username)
                 .then(querySnap => {

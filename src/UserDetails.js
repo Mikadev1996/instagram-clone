@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {getUserData, loadUserImages} from "./index";
 import ProfileDisplay from "./components/ProfilePage/ProfileDisplay";
 
-const UserDetails = ({uid, isCurrentUser}) => {
+const UserDetails = ({uid, isCurrentUser, editProfile, updateProfile, handleEditProfile}) => {
     const [userData, setUserData] = useState({});
     const [userPosts, setUserPosts] = useState([]);
 
@@ -35,6 +35,9 @@ const UserDetails = ({uid, isCurrentUser}) => {
                 userBio={userData.bio}
                 userPosts={userPosts}
                 isCurrentUser={isCurrentUser}
+                editProfile={editProfile}
+                updateProfile={updateProfile}
+                handleEditProfile={handleEditProfile}
             />
         </div>
     )
