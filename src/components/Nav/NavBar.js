@@ -24,12 +24,12 @@ const NavBar = ({signedIn, handleCreateNewPost, handleOpenSignIn, handleOpenSign
                         signedIn={signedIn}
 
                     />}
-                    {signedIn &&
                     <NavUserSelection uid={uid}
                                       handleCreateNewPostMenu={handleCreateNewPostMenu}
                                       userProfilePic={userProfilePic}
+                                      signedIn={signedIn}
 
-                    />}
+                    />
                 </div>
             </nav>
             {openSignUp && <SignUp handleCancel={handleCancel} handleSignUpForm={handleSignUpForm} /> }

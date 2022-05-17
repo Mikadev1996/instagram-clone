@@ -49,6 +49,10 @@ function handleSignUpError(errorCode) {
     } else {
         setSuccessFor(emailError);
     }
+
+    if (errorCode === "auth/email-already-in-use") {
+        setErrorFor(emailError, "Email Already In Use");
+    }
 }
 
 function setErrorFor(input, msg) {

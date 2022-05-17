@@ -9,7 +9,15 @@ import {
     signOut,
     updateProfile
 } from "firebase/auth";
-import {addProfileToDatabase, getPost, getProfilePicUrl, getUserName, isUserSignedIn, saveImagePost} from "../../index";
+import {
+    addProfileToDatabase,
+    checkUserNameAvailable,
+    getPost,
+    getProfilePicUrl,
+    getUserName,
+    isUserSignedIn,
+    saveImagePost
+} from "../../index";
 import {handleSignInError, handleSignUpError} from "../Nav/formErrors";
 
 const HomePage = () => {
@@ -61,9 +69,6 @@ const HomePage = () => {
         if (password !== passwordCheck) {
             handleSignUpError("passwords do not match");
             return;
-        } else if (username === "mikadev1996") {
-            handleSignUpError("username already exists");
-            return;
         }
 
         const auth = getAuth();
@@ -81,7 +86,7 @@ const HomePage = () => {
                         setOpenSignUp(false);
                     })
             })
-            .catch(error => console.log(error.code, error.message));
+            .catch(error => handleSignUpError(error.code));
     }
 
     function handleSignInForm(e) {

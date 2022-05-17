@@ -55,6 +55,11 @@ async function loadUserImages(username) {
     return await getDocs(recentImagesQuery);
 }
 
+async function checkUserNameAvailable(username) {
+    const nameQuery = query(collection(getFirestore(), 'users'), where("name", "==", username));
+    const nameData = await getDocs(nameQuery);
+    return nameData.empty;
+}
 
 async function checkIfImageLiked(postId) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
@@ -177,4 +182,18 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked, updateDatabaseUserProfile, getPost, getUserData, loadUserImages};
+export {
+    isUserSignedIn,
+    getUserName,
+    getProfilePicUrl,
+    getDefaultImage,
+    saveImagePost,
+    addProfileToDatabase,
+    likeImagePost,
+    checkIfImageLiked,
+    updateDatabaseUserProfile,
+    getPost,
+    getUserData,
+    loadUserImages,
+    checkUserNameAvailable,
+};

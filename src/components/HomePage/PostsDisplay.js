@@ -11,6 +11,7 @@ import {
     query,
     startAfter,
 } from "firebase/firestore";
+import FloatInfo from "./FloatInfo";
 
 const PostsDisplay = ({username, userProfilePic, newPost}) => {
     const [displayedPosts, setDisplayedPosts] = useState([]);
@@ -19,6 +20,7 @@ const PostsDisplay = ({username, userProfilePic, newPost}) => {
     // Load Images on page load
     useEffect(() => {
         async function loadImages() {
+            console.log(username)
             if (username !== "") {
                 const recentImagesQuery = query(collection(getFirestore(), 'posts'), orderBy('timestamp', 'desc'), limit(3));
                 const querySnapshot = await getDocs(recentImagesQuery);
@@ -96,17 +98,7 @@ const PostsDisplay = ({username, userProfilePic, newPost}) => {
             <div id="main-profile-display">
                 {userProfilePic !== null && <img src={userProfilePic}  alt="profile pic" id="main-display-user-image"/>}
                 <p>{username}</p>
-                <div id="float-info">
-                    <ul>
-                        <li>About ・</li>
-                        <li>Help ・</li>
-                        <li>Jobs ・</li>
-                        <li>Privacy ・</li>
-                        <li>Terms ・</li>
-                        <li>Language</li>
-                    </ul>
-                    <p>© 2022 Clone INSTAGRAM FROM MIKA</p>
-                </div>
+                {username !== "" && <FloatInfo />}
             </div>
         </div>
     )
