@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import NavBar from "../Nav/NavBar";
 import HomePageStyle from '../styles/HomePage.scss';
 import PostsDisplay from "./PostsDisplay";
