@@ -3,12 +3,15 @@ import NewPostStyle from '../styles/NewPost.scss';
 import moment from "moment";
 import whiteLikeIcon from '../../images/white-like-icon.png';
 import redLikeIcon from '../../images/red-like-icon.png';
-import {getAuth} from "firebase/auth";
-import {addProfileToDatabase, checkIfImageLiked, getProfilePicUrl, getUserProfilePic, likeImagePost} from "../../index";
-import {doc, getDoc, getFirestore} from "firebase/firestore";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {
+    checkIfImageLiked,
+    getUserData,
+    likeImagePost
+} from "../../index";
 
-const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, posterUid}) => {
+import { Link } from "react-router-dom";
+
+const Post = ({postUrl, username, caption, timestamp, likes, id, posterUid}) => {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(likes);
     const [profileUrl, setProfileUrl] = useState("");
@@ -25,10 +28,10 @@ const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, pos
                     setIsLiked(true);
                 }
             });
-        getUserProfilePic(posterUid)
-            .then(r => {
-                if (r) {
-                    setProfileUrl(r);
+        getUserData(posterUid)
+            .then(userdata => {
+                if (userdata) {
+                    setProfileUrl(userdata.profilePicUrl);
                 }
             })
     }, []);
@@ -52,13 +55,12 @@ const Post = ({postUrl, profilePic, username, caption, timestamp, likes, id, pos
             </Link>
             <div className="post-info">
                 <img src={likeIcon} alt="like" className="like-icon" onClick={() => {
-                    console.log("btn clicked)");
                     setIsLiked(!isLiked);
                     isLiked ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
                     likeImagePost(id);
                 }}/>
                 <p className="post-likes">Liked by <strong>{likeCount}</strong> users</p>
-                <p><strong>{username}</strong> {caption}</p>
+                <p><strong>{username}</strong>{caption}</p>
                 <p className="post-date">{date}</p>
             </div>
         </div>

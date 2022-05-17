@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from "react";
 import NavBar from "../Nav/NavBar";
 import ProfileStyle from '../styles/ProfilePage.scss';
-import PreviewPost from "./PreviewPost";
-import {getProfilePicUrl, getUserProfileBio, updateDatabaseUserProfile} from "../../index";
+import {getProfilePicUrl, getUserData, loadUserImages, updateDatabaseUserProfile} from "../../index";
 import {getAuth} from "firebase/auth";
-import {collection, getDocs, getFirestore, query, where} from "firebase/firestore";
 import ProfileDisplay from "./ProfileDisplay";
 
 const ProfilePage = () => {
@@ -19,7 +17,7 @@ const ProfilePage = () => {
         if (user) {
             setUsername(user.displayName);
             setUserProfilePic(getProfilePicUrl());
-            getUserProfileBio(getAuth().currentUser.uid).then(r => setUserBio(r));
+            getUserData(getAuth().currentUser.uid).then(userdata => setUserBio(userdata.bio));
         }
         else {
             setUsername("");
@@ -32,19 +30,29 @@ const ProfilePage = () => {
     }
 
     useEffect(() => {
-        async function loadUserImages() {
-            if (username !== "") {
-                const recentImagesQuery = query(collection(getFirestore(), 'posts'), where("name", "==", username));
-                const querySnapshot = await getDocs(recentImagesQuery);
-                querySnapshot.forEach((doc) => {
-                    let post = {...doc.data(), postId: doc.id};
-                    if (post.imageUrl !== "LOADING_IMAGE_URL") {
-                        setUserPosts(userPosts => [...userPosts, post]);
-                    }
+        // async function loadUserImages() {
+        //     if (username !== "") {
+        //         const recentImagesQuery = query(collection(getFirestore(), 'posts'), where("name", "==", username));
+        //         const querySnapshot = await getDocs(recentImagesQuery);
+        //         querySnapshot.forEach((doc) => {
+        //             let post = {...doc.data(), postId: doc.id};
+        //             if (post.imageUrl !== "LOADING_IMAGE_URL") {
+        //                 setUserPosts(userPosts => [...userPosts, post]);
+        //             }
+        //         })
+        //     }
+        // }
+        if (username !== "") {
+            loadUserImages(username)
+                .then(querySnap => {
+                    querySnap.forEach((doc) => {
+                        let post = {...doc.data(), postId: doc.id};
+                        if (post.imageUrl !== "LOADING_IMAGE_URL") {
+                            setUserPosts(userPosts => [...userPosts, post]);
+                        }
+                    })
                 })
-            }
         }
-        loadUserImages()
     }, [username]);
 
     const updateProfile = () => {

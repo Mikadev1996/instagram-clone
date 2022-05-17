@@ -14,6 +14,7 @@ const ProfileDisplay = ({username, userPosts, userProfilePic, editProfile, updat
                              userPosts={userPosts}
                              handleEditProfile={handleEditProfile}
                              userBio={userBio}
+                             editProfile={editProfile}
                 />
 
                 <hr className="profile-separator"/>
@@ -22,7 +23,7 @@ const ProfileDisplay = ({username, userPosts, userProfilePic, editProfile, updat
                     <div className="grid-container">
                         {(userPosts.length > 0) && userPosts.map((data) => {
                             return (
-                                <PreviewPost imageUrl={data.imageUrl}/>
+                                <PreviewPost imageUrl={data.imageUrl} key={data.postId}/>
                             )
                         })}
                     </div>

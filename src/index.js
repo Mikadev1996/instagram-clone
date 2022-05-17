@@ -4,17 +4,20 @@ import RouteSwitch from "./RouteSwitch";
 import {getFirebaseConfig} from "./firebase-config";
 import {initializeApp} from "firebase/app";
 import {
-    getFirestore,
     addDoc,
-    setDoc,
-    collection,
-    serverTimestamp,
-    updateDoc,
-    getDoc,
-    doc,
-    arrayUnion,
     arrayRemove,
+    arrayUnion,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    getFirestore,
     increment,
+    query,
+    serverTimestamp,
+    setDoc,
+    updateDoc,
+    where,
 } from "firebase/firestore";
 import {getAuth, updateProfile} from 'firebase/auth';
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
@@ -41,19 +44,17 @@ function getProfilePicUrl() {
     return getAuth().currentUser.photoURL;
 }
 
-async function getUserProfilePic(uid) {
+async function getUserData(uid) {
     const userRef = doc(getFirestore(), "users", uid);
     const userSnap = await getDoc(userRef);
-    const userData = userSnap.data();
-    return userData.profilePicUrl;
+    return userSnap.data();
 }
 
-async function getUserProfileBio(uid) {
-    const userRef = doc(getFirestore(), "users", uid);
-    const userSnap = await getDoc(userRef);
-    const userData = userSnap.data();
-    return userData.bio;
+async function loadUserImages(username) {
+    const recentImagesQuery = query(collection(getFirestore(), 'posts'), where("name", "==", username));
+    return await getDocs(recentImagesQuery);
 }
+
 
 async function checkIfImageLiked(postId) {
     const userRef = doc(getFirestore(), "users", getAuth().currentUser.uid);
@@ -169,4 +170,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked, updateDatabaseUserProfile, getPost, getUserProfilePic, getUserProfileBio};
+export {isUserSignedIn, getUserName, getProfilePicUrl, getDefaultImage, saveImagePost, addProfileToDatabase, likeImagePost, checkIfImageLiked, updateDatabaseUserProfile, getPost, getUserData, loadUserImages};
