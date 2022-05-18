@@ -46,7 +46,7 @@ const Post = ({postUrl, username, caption, timestamp, likes, id, posterUid}) => 
                         <img className="nav-profile-pic" alt="profile-pic" src={profileUrl} />
                     </div>
                     <div>
-                        <p>{username}</p>
+                        <p className="nav-post-username">{username}</p>
                     </div>
                 </div>
                 <div>
@@ -60,7 +60,7 @@ const Post = ({postUrl, username, caption, timestamp, likes, id, posterUid}) => 
                     likeImagePost(id);
                 }}/>
                 <p className="post-likes">Liked by <strong>{likeCount}</strong> users</p>
-                <Link to={`user/${posterUid}`}><p><strong>{username}</strong> {caption}</p></Link>
+                <Link to={`user/${posterUid}`}><p><strong>{username}</strong> {caption} </p></Link>
                 <p className="post-date">{date}</p>
             </div>
         </div>
